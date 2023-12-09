@@ -11,12 +11,13 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <limits.h>
 
-static char	*ft_writer(char *str, int bas, int n)
+static char	*ft_writer(char *str, int bas, long n)
 {
-	int	i;
-	int	b;
-	int	c;
+	int		i;
+	int		b;
+	long	c;
 
 	i = 0;
 	if (n > 9)
@@ -39,12 +40,10 @@ static char	*ft_writer(char *str, int bas, int n)
 	return (str);
 }
 
-static void	is_negative(int n, char *str, int bas)
+static void	is_negative(long n, char *str, int bas)
 {
 	*str = '-';
-	str++;
-	str = ft_writer(str, bas, (n * -1));
-	str = str - 1;
+	str = ft_writer(++str, bas, -n);
 }
 
 char	*ft_itoa(int n)
@@ -66,6 +65,35 @@ char	*ft_itoa(int n)
 		n1 = n1 / 10;
 	if (n == -2147483648)
 		return (ft_strdup("-2147483648"));
+	str = (char *)malloc(sizeof(char) * (i + a + 1));
+	if (!str)
+		return (0);
+	else if (n < 0)
+		is_negative(n, str, i);
+	else
+		ft_writer(str, i, n);
+	return (str);
+}
+
+char	*ft_ltoa(long n)
+{
+	int		i;
+	int		a;
+	long	n1;
+	char	*str;
+
+	n1 = n;
+	a = 0;
+	if (n1 < 0)
+	{
+		a = 1;
+		n1 *= -1;
+	}
+	i = 1;
+	while (n1 >= 10 && ++i)
+		n1 = n1 / 10;
+	if (n == LLONG_MIN)
+		return (ft_strdup("-9223372036854775808"));
 	str = (char *)malloc(sizeof(char) * (i + a + 1));
 	if (!str)
 		return (0);

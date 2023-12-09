@@ -74,6 +74,12 @@ int	ft_strchecker(va_list arg, int g)
 		len += array_print(a);
 		free(a);
 	}
+	if (g == 'l')
+	{
+		a = ft_ltoa(va_arg(arg, long));
+		len += array_print(a);
+		free(a);
+	}
 	if (g == 'u')
 		len += ft_uitoa(va_arg(arg, unsigned int));
 	if (g == 'x' || g == 'X')
@@ -98,6 +104,8 @@ int	ft_printf(const char *str, ...)
 		{
 			i++;
 			len += ft_strchecker(arg, str[i]);
+			if (str[i] == 'l')
+				i++;
 		}
 		else
 		{
