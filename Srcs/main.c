@@ -6,6 +6,9 @@
 #include <pwd.h>
 #include <errno.h>
 #include <grp.h>
+#include <time.h>
+
+//Hint: ls could be use with a file or folder
 
 /* First */
 //-R, --recursive /* First */
@@ -151,9 +154,29 @@
 
 //◦ getxattr
 
+//#include <time.h>
 //◦ time
-
 //◦ ctime
+//      char *ctime(const time_t *timep);
+//      DESCRIPTION         top
+//             The ctime(), gmtime(), and localtime() functions all take an
+//             argument of data type time_t, which represents calendar time.
+//             When interpreted as an absolute time value, it represents the
+//             number of seconds elapsed since the Epoch, 1970-01-01 00:00:00
+//             +0000 (UTC).
+//      
+//             The asctime() and mktime() functions both take an argument
+//             representing broken-down time, which is a representation
+//             separated into year, month, day, and so on.
+//      
+//             Broken-down time is stored in the structure tm, described in
+//             tm(3type).
+//      
+//             The call ctime(t) is equivalent to asctime(localtime(t)).  It
+//             converts the calendar time t into a null-terminated string of the
+//             form
+//      
+//                 "Wed Jun 30 21:49:08 1993\n"
 
 //◦ readlink
 
@@ -193,7 +216,9 @@ int main(int ac, char *argv[])
         stat(dir->d_name, &status);
         struct passwd *userInf = getpwuid(status.st_uid);
         struct group *groupInf = getgrgid(status.st_gid);
-        ft_printf("%ld\t%s\t%s %d %s\n", status.st_nlink, userInf->pw_name, groupInf->gr_name, status.st_size, status.st_mtine, dir->d_name);
+        char *date = ctime(&status.st_mtim.tv_sec);
+        date[ft_strlen(date) - 1] = '\0';
+        ft_printf("%d %ld\t%s\t%s %d %s %s\n", status.st_mode, status.st_nlink, userInf->pw_name, groupInf->gr_name, status.st_size, date, dir->d_name);
         //free(userInf);
         dir = readdir(dir1);
     }
