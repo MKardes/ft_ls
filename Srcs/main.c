@@ -7,6 +7,8 @@
 #include <errno.h>
 #include <grp.h>
 #include <time.h>
+#define MAX_MODES 5
+// [0] = -a, [1] = -l, [2] = -R, [3] = -r, [4] = -t
 
 //Hint: ls could be use with a file or folder
 
@@ -184,21 +186,125 @@
 
 //◦ strerror
 
+//File Type Bits (Higher-order bits):
+//S_IFREG: Regular file       -: Regular file
+//S_IFDIR: Directory          d: Directory
+//S_IFCHR: Character device   c: Character device
+//S_IFBLK: Block device       b: Block device
+//S_IFIFO: FIFO (named pipe)  p: FIFO (named pipe)
+//S_IFLNK: Symbolic link      l: Symbolic link
+//S_IFSOCK: Socket            s: Socket
+//Permission Bits (Lower-order bits):
+//S_IRUSR, S_IWUSR, S_IXUSR: Owner's read, write, and execute permissions => S_IRWXU
+//S_IRGRP, S_IWGRP, S_IXGRP: Group's read, write, and execute permissions => S_IRWXG
+//S_IROTH, S_IWOTH, S_IXOTH: Others' read, write, and execute permissions => S_IRWXO
 
 typedef struct dirent* dirPoint;
 #include <limits.h>
+
+void getFlags(int ac, char *argv[], char *modes) {
+    int i;
+    int j;
+
+    i = 0;
+    while (i < MAX_MODES)
+    {
+        modes[i] = '-';
+        i++;
+    }
+    i = 0;
+    while (i < ac)
+    {
+        if (argv[i][0] == '-')
+        {
+            j = 1;
+            while (argv[i][j])
+            {
+                if (argv[i][j] == 'a')
+                    modes[0] = 'a';
+                else if (argv[i][j] == 'l')
+                    modes[1] = 'l';
+                else if (argv[i][j] == 'R')
+                    modes[2] = 'R';
+                else if (argv[i][j] == 'r')
+                    modes[3] = 'r';
+                else if (argv[i][j] == 't')
+                    modes[4] = 't';
+                else
+                {
+                    write(2, "ls: option requires an argument -- '", 36);
+                    ft_printf("%c", argv[i][j]);
+                    write(2, "'\n", 3);
+                    exit(2);
+                }
+                j++;
+            }
+        }
+        i++;
+    }
+}
+
+void getAcm(int n, char* acm)
+{
+    int i;
+    
+    i = -1;
+    while (++i < 10)
+        acm[i] = '-';
+    if (S_ISDIR(n))
+        acm[0] = 'd';
+    else if (S_ISCHR(n))
+        acm[0] = 'c';
+    else if (S_ISBLK(n))
+        acm[0] = 'b';
+    else if (S_ISFIFO(n))
+        acm[0] = 'p';
+    else if (S_ISLNK(n))
+        acm[0] = 'l';
+    else if (S_ISSOCK(n))
+        acm[0] = 's';
+    if (n & S_IRUSR)
+        acm[1] = 'r';
+    if (n & S_IWUSR)
+        acm[2] = 'w';
+    if (n & S_IXUSR)
+        acm[3] = 'x';
+    if (n & S_IRGRP)
+        acm[4] = 'r';
+    if (n & S_IWGRP)
+        acm[5] = 'w';
+    if (n & S_IXGRP)
+        acm[6] = 'x';
+    if (n & S_IROTH)
+        acm[7] = 'r';
+    if (n & S_IWOTH)
+        acm[8] = 'w';
+    if (n & S_IXOTH)
+        acm[9] = 'x';
+}
+
+void listRecursive(int i)
+{
+    listRecursive(i);
+}
+
 int main(int ac, char *argv[])
 {
-    if (ac < 1)
-        return -1;
-    if (ac == 1)
-    {
-        // the file is "."
-    }
-    else
-    {
-        // there is a loop to list all the arguments
-    }
+    char modes[MAX_MODES];
+
+    getFlags(ac, argv, modes);
+    //if (ac < 1)
+    //    return -1;
+    //if (ac == 1)
+    //{
+    //    // the file is "."
+    //    list(1, argv, "-----");
+    //}
+    //else
+    //{
+    //    // there is a loop to list all the arguments
+    //    list(ac, argv, modes);
+    //}
     DIR *dir1 = opendir(argv[1]);
     if (!dir1)
     {
@@ -217,10 +323,11 @@ int main(int ac, char *argv[])
         struct passwd *userInf = getpwuid(status.st_uid);
         struct group *groupInf = getgrgid(status.st_gid);
         char *date = ctime(&status.st_mtim.tv_sec);
+        char acm[11];
+        getAcm(status.st_mode, acm);
         date[ft_strlen(date) - 1] = '\0';
-        ft_printf("%d %ld\t%s\t%s %d %s %s\n", status.st_mode, status.st_nlink, userInf->pw_name, groupInf->gr_name, status.st_size, date, dir->d_name);
+        ft_printf("%s %ld\t%s\t%s %ld %s %s\n", acm, status.st_nlink, userInf->pw_name, groupInf->gr_name, status.st_size, date, dir->d_name);
         //free(userInf);
         dir = readdir(dir1);
     }
-    //printf("%s\n",dir1->d_name);
 }
