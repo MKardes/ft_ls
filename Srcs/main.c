@@ -20,6 +20,13 @@
 //          The -l option signifies the long list format.
 //          This shows a lot more information presented to the user than the standard command. You will see the file permissions,
 //          the number of links, owner name, owner group, file size, time of last modification, and the file or directory name. 
+//
+//          > What 'total 8' stands for?
+//          > Thank you very much.
+//          That is the total number of file system blocks, including indirect
+//          blocks, used by the listed files.  If you run "ls -s" on the same
+//          files and sum the reported numbers you'll get that same number.
+
 //-a, --all
 //    do not ignore entries starting with .
 
@@ -244,11 +251,13 @@ void getFlags(int ac, char *argv[], char *modes) {
     }
 }
 
-void getAcm(int n, char* acm)
+char* getAcm(int n)
 {
     int i;
+    char acm[11];
     
     i = -1;
+    acm[10] = '\0';
     while (++i < 10)
         acm[i] = '-';
     if (S_ISDIR(n))
@@ -281,6 +290,81 @@ void getAcm(int n, char* acm)
         acm[8] = 'w';
     if (n & S_IXOTH)
         acm[9] = 'x';
+    return(ft_strdup(acm));
+}
+
+void    listAddBack(t_list **list, dirPoint dir, long *maxSize, long *total){
+    struct stat status;
+    stat(dir->d_name, &status);
+    struct passwd*  userInf = getpwuid(status.st_uid);
+    struct group*   groupInf = getgrgid(status.st_gid);
+    t_list          *tmp = NULL; 
+    t_listF         *obj = NULL;
+
+    obj = (t_listF *)malloc(sizeof(t_listF));
+    obj->acm = getAcm(status.st_mode);
+    obj->nlink = status.st_nlink;
+    obj->pw_name = ft_strdup(userInf->pw_name);
+    obj->gr_name = ft_strdup(groupInf->gr_name);
+    obj->size = status.st_size;
+    if (*maxSize < obj->size)
+        *maxSize = obj->size;
+    obj->date = ft_substr(ctime(&status.st_mtim.tv_sec), 4, 13);
+    obj->date[ft_strlen(obj->date) - 1] = '\0';
+    obj->name = ft_strdup(dir->d_name);
+    tmp = ft_lstnew(obj);
+    ft_lstadd_back(list, tmp);
+    *total += status.st_blocks / 2;
+}
+
+int	digit_count(long n)
+{
+	int	i;
+
+	i = 0;
+	while (n >= 10)
+	{
+		n = n / 10;
+		i++;
+	}
+	return (i + 1);
+}
+
+char *getSize(int maxDigitCount, long size)
+{
+    int     i;
+    int     digitCount;
+    char    *res = NULL;
+    char    *sizeStr;
+
+    res = (char *)malloc(sizeof(char) * maxDigitCount + 1);
+    digitCount = digit_count(size);
+    i = -1;
+    while (++i < maxDigitCount - digitCount)
+        res[i] = ' ';
+    res[i] = '\0';
+    sizeStr = ft_ltoa(size);
+    ft_strlcat(res, sizeStr, ft_strlen(res) + ft_strlen(sizeStr) + 1);
+    free(sizeStr);
+    return res;
+}
+
+void printList(t_list *list, long maxSize, long total)
+{
+    int         maxDigitCount;
+    char*       fileSize;
+    t_listF*    c = NULL;
+    
+    maxDigitCount = digit_count(maxSize);
+    ft_printf("total %ld\n", total);
+    while (list)
+    {
+        c = list->content;
+        fileSize = getSize(maxDigitCount, c->size);
+        ft_printf("%s %ld %s %s %s %s %s\n", c->acm, c->nlink, c->pw_name, c->gr_name, fileSize, c->date, c->name);
+        free(fileSize);
+        list = list->next;
+    }
 }
 
 void listRecursive(int i)
@@ -305,7 +389,10 @@ int main(int ac, char *argv[])
     //    // there is a loop to list all the arguments
     //    list(ac, argv, modes);
     //}
-    DIR *dir1 = opendir(argv[1]);
+    DIR*    dir1 = opendir(argv[1]);
+    long    maxSize = 0;
+    long    total = 0;
+    t_list* list = NULL;
     if (!dir1)
     {
         char error[100] = "ft_ls: cannot access '";
@@ -318,16 +405,20 @@ int main(int ac, char *argv[])
     while(dir)
     {
         // size için hepsinin size ını bilip ona göre listele(hizalamak için)
-        struct stat status;
-        stat(dir->d_name, &status);
-        struct passwd *userInf = getpwuid(status.st_uid);
-        struct group *groupInf = getgrgid(status.st_gid);
-        char *date = ctime(&status.st_mtim.tv_sec);
-        char acm[11];
-        getAcm(status.st_mode, acm);
-        date[ft_strlen(date) - 1] = '\0';
-        ft_printf("%s %ld\t%s\t%s %ld %s %s\n", acm, status.st_nlink, userInf->pw_name, groupInf->gr_name, status.st_size, date, dir->d_name);
+        if (dir->d_name[0] == '.' && modes[0] != 'a')
+        {
+            dir = readdir(dir1);
+            continue ;
+        }
+        if (modes[1] == 'l')
+            listAddBack(&list, dir, &maxSize, &total);
+        else
+            ft_printf("%s  ", dir->d_name);
         //free(userInf);
         dir = readdir(dir1);
     }
+    if (modes[1] == 'l')
+        printList(list, maxSize, total);
+    else
+        ft_printf("\n");
 }

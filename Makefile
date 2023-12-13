@@ -13,7 +13,7 @@ $(NAME) : $(LIBFT) $(SRCS)
 	@echo "\nFt_LS compiled successfully"
 
 $(LIBFT): $(F_LIBFT)
-	make -C $(F_LIBFT)
+	make bonus -C $(F_LIBFT)
 	@echo "\nLibft Done"
 
 clean:
