@@ -25,17 +25,3 @@ void	ft_striteri(char *s, void (*f)(unsigned int, char *))
 		i++;
 	}
 }
-/*
-
-void	ft_ft(unsigned int i, char *a)
-{
-	*a = *a + i;
-}
-
-int	main()
-{
-	char	a[] = "aaaaaa";
-
-	ft_striteri(a, &ft_ft);
-	printf("%s", a);
-}*/
