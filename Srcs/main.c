@@ -7,7 +7,9 @@
 #include <errno.h>
 #include <grp.h>
 #include <time.h>
-// [0] = -a, [1] = -l, [2] = -R, [3] = -r, [4] = -t
+#include <stdbool.h>
+
+
 
 //Hint: ls could be use with a file or folder
 
@@ -63,6 +65,7 @@ void    delDirs(void *e)
     t_dir* arg = (t_dir*)e;
     closedir(arg->dir);
     free(arg->path);
+    free(arg);
 }
 
 int main(int ac, char *argv[])
@@ -71,14 +74,17 @@ int main(int ac, char *argv[])
     char    modes[MAX_MODES];
     int     f_cnt;
     int     res = 0;
+    bool    flag = 1;
 
     f_cnt = getFlags(ac, argv, modes);
     directories = getDirectories(ac, argv, ac - f_cnt - 1);
     if (!directories)
         return(-1);
+    if ((ac - f_cnt - 1 == 0 || ac - f_cnt - 1 == 1) && modes[2] != 'R')
+        flag = 0;
     while (directories)
     {
-        res = ls(modes, (t_dir *)directories->content);
+        res = ls(modes, (t_dir *)directories->content, flag);
         directories = directories->next;
     }
     ft_lstclear(&directories, &delDirs);

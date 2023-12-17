@@ -7,6 +7,7 @@
 #include <grp.h>
 #include <time.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 static int	digit_count(long n)
 {
@@ -61,12 +62,25 @@ static char *addSpaces(char *str, long size)
     return (res);
 }
 
-static void printList(t_list *list, long maxSize[3], long total)
+static void printList(t_list *list, long maxSize[3], long total, const char *path)
 {
     int         maxDigitCount;
     char*       fileSize;
     t_listF*    c = NULL;
     
+    if (path)
+        ft_printf("\n%s:\n", path);
+    if (total == -1)
+    {
+        // lists without -l
+        while (list)
+        {
+            ft_printf("%s  ", list->content);
+            list = list->next;
+        }
+        ft_printf("\n");
+        return ;
+    }
     maxDigitCount = digit_count(maxSize[2]);
     ft_printf("total %ld\n", total);
     while (list)
@@ -185,7 +199,7 @@ static void printList(t_list *list, long maxSize[3], long total)
 //      
 //                 "Wed Jun 30 21:49:08 1993\n"
 
-static void    listAddBack(t_list **list, const char *path, dirPoint dir, long *maxSize, long *total)
+static char    lListAddBack(t_list **list, const char *path, dirPoint dir, long *maxSize, long *total)
 {
     struct stat status;
     char        *tmp1 = ft_strjoin(path, "/");
@@ -193,7 +207,7 @@ static void    listAddBack(t_list **list, const char *path, dirPoint dir, long *
     if (stat(tmp2, &status) < 0)
     {
         ft_printf("Status info couldn't be taken!\n");
-        return ;
+        return '\0';
     }
     free(tmp1);
     free(tmp2);
@@ -220,6 +234,26 @@ static void    listAddBack(t_list **list, const char *path, dirPoint dir, long *
     tmp = ft_lstnew(obj);
     ft_lstadd_back(list, tmp);
     *total += status.st_blocks / 2;
+    return (obj->acm[0]);
+}
+
+static char    listAddBack(t_list **list, const char *path, const char *dir_name)
+{
+    struct stat status;
+    t_list      *tmp = NULL;
+    char        *tmp1 = ft_strjoin(path, "/");
+    char        *tmp2 = ft_strjoin(tmp1, dir_name);
+
+    stat(tmp2, &status);
+    free(tmp1);
+    free(tmp2);
+    tmp = ft_lstnew(ft_strdup(dir_name));
+    ft_lstadd_back(list, tmp);
+    if (S_ISDIR(status.st_mode))
+        return ('d');
+    if (S_ISLNK(status.st_mode))
+        return ('l');
+    return ('\0');
 }
 
 //#include <dirent.h>
@@ -254,7 +288,7 @@ static void    listAddBack(t_list **list, const char *path, dirPoint dir, long *
 //      Return Value
 //          The closedir() function returns 0 on success. On error, -1 is returned, and errno is set appropriately.
 
-void    delList(void *e)
+void    delLList(void *e)
 {
     t_listF* arg = (t_listF*)e;
     free(arg->acm);
@@ -262,14 +296,57 @@ void    delList(void *e)
     free(arg->gr_name);
     free(arg->date);
     free(arg->name);
+    free(arg);
 }
 
-int ls(const char *modes, t_dir *directory)
+void    delList(void *e)
+{
+    free(e);
+}
+
+t_dir* openDir(const char* dir_path, const char*  dir_name)
+{
+    DIR*    open = NULL;
+    t_dir*  dir = NULL;
+
+    open = opendir(dir_name);
+    if (!open)
+    {
+        char error[100];
+        if (errno == EACCES)
+            ft_strlcpy(error, "ft_ls: cannot open directory '", 28);
+        else
+            ft_strlcpy(error, "ft_ls: cannot access '", 23);
+        ft_strlcat(error, dir_name, ft_strlen(dir_name) + ft_strlen(error) + 1);
+        ft_strlcat(error, "'", ft_strlen(error) + 2);
+        perror(error);
+        return (NULL);
+    }
+    else
+    {
+        char* tmp = ft_strjoin(dir_path, "/");
+        dir = (t_dir *)malloc(sizeof(t_dir));
+        if (!dir)
+            return (NULL);
+        dir->dir = open;
+        dir->path = ft_strjoin(tmp, dir_name);
+        free(tmp);
+    }
+    return (dir);
+}
+
+int ls(const char *modes, t_dir *directory, bool flag)
 {
     long    maxSize[3] = {0,0,0};
     long    total = 0;
     t_list* list = NULL;
+    char*   path = NULL;
+    char    type;
 
+    if (!directory)
+        return(2);
+    if (flag)
+        path = directory->path;
     dirPoint dir = readdir(directory->dir);
     while(dir)
     {
@@ -280,16 +357,26 @@ int ls(const char *modes, t_dir *directory)
             continue ;
         }
         if (modes[1] == 'l')
-            listAddBack(&list, directory->path, dir, maxSize, &total);
+            type = lListAddBack(&list, directory->path, dir, maxSize, &total);
         else
-            ft_printf("%s  ", dir->d_name);
-        //free(userInf);
+            type = listAddBack(&list, directory->path, dir->d_name);
+        if (modes[2] == 'R' && type == 'd')
+        {
+            t_dir* recDir = openDir(directory->path, dir->d_name);
+            ls(modes, recDir, flag);
+            delDirs(recDir);
+        }
         dir = readdir(directory->dir);
     }
     if (modes[1] == 'l')
-        printList(list, maxSize, total);
+    {
+        printList(list, maxSize, total, path);
+        ft_lstclear(&list, &delLList);
+    }
     else
-        ft_printf("\n");
-    ft_lstclear(&list, &delList);
+    {
+        printList(list, maxSize, -1, path);
+        ft_lstclear(&list, &delList);
+    }
     return(0);
 }

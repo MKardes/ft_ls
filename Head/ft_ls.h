@@ -3,7 +3,10 @@
 
 # include "libft.h"
 # include <dirent.h>
+# include <stdbool.h>
+
 # define MAX_MODES 5
+// [0] = -a, [1] = -l, [2] = -R, [3] = -r, [4] = -t
 
 typedef struct s_listF {
     char*   acm;
@@ -30,6 +33,9 @@ t_list  *getDirectories(int ac, char *argv[], int dir_cnt);
 int     getFlags(int ac, char *argv[], char *modes);
 
 /* ls.c */
-int ls();
+int ls(const char *modes, t_dir *directory, bool flag);
+
+/* main.c */
+void    delDirs(void *e);
 
 #endif

@@ -2,6 +2,7 @@
 #include "ft_ls.h"
 #include <stdio.h>
 #include <dirent.h>
+#include <errno.h>
 
 // t_list: 
 //  {
@@ -22,9 +23,13 @@ static t_list  *dirs(char **dirs)
         open = opendir(dirs[i]);
         if (!open)
         {
-            char error[100] = "ft_ls: cannot access '";
-            ft_strlcat(error, dirs[i], ft_strlen(dirs[i]) + 23);
-            ft_strlcat(error, "'", ft_strlen(dirs[i]) + 24);
+            char error[100];
+            if (errno == EACCES)
+                ft_strlcpy(error, "ft_ls: cannot open directory '", 28);
+            else
+                ft_strlcpy(error, "ft_ls: cannot access '", 23);
+            ft_strlcat(error, dirs[i], ft_strlen(dirs[i]) + ft_strlen(error) + 1);
+            ft_strlcat(error, "'", ft_strlen(error) + 2);
             perror(error);
         }
         else
