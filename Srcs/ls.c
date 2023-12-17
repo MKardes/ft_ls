@@ -40,18 +40,41 @@ static char *getSize(int maxDigitCount, long size)
     return res;
 }
 
-static void printList(t_list *list, long maxSize, long total)
+static char *addSpaces(char *str, long size)
+{
+    int     i;
+    int     len;
+    char    *res = NULL;
+    char    *spcs = NULL;
+
+    if (size <= (long)ft_strlen(str))
+        return (str);
+    len = size - ft_strlen(str);
+    spcs = (char *)malloc(sizeof(char) * (len + 1));
+    spcs[len] = '\0';
+    i = -1;
+    while (++i < len) 
+        spcs[i] = ' ';
+    res = ft_strjoin(str, spcs);
+    free(spcs);
+    free(str);
+    return (res);
+}
+
+static void printList(t_list *list, long maxSize[3], long total)
 {
     int         maxDigitCount;
     char*       fileSize;
     t_listF*    c = NULL;
     
-    maxDigitCount = digit_count(maxSize);
+    maxDigitCount = digit_count(maxSize[2]);
     ft_printf("total %ld\n", total);
     while (list)
     {
         c = list->content;
         fileSize = getSize(maxDigitCount, c->size);
+        c->pw_name = addSpaces(c->pw_name, maxSize[0]);
+        c->gr_name = addSpaces(c->gr_name, maxSize[1]);
         ft_printf("%s %ld %s %s %s %s %s\n", c->acm, c->nlink, c->pw_name, c->gr_name, fileSize, c->date, c->name);
         free(fileSize);
         list = list->next;
@@ -162,14 +185,18 @@ static void printList(t_list *list, long maxSize, long total)
 //      
 //                 "Wed Jun 30 21:49:08 1993\n"
 
-static void    listAddBack(t_list **list, dirPoint dir, long *maxSize, long *total)
+static void    listAddBack(t_list **list, const char *path, dirPoint dir, long *maxSize, long *total)
 {
     struct stat status;
-    if (stat(dir->d_name, &status) < 0)
+    char        *tmp1 = ft_strjoin(path, "/");
+    char        *tmp2 = ft_strjoin(tmp1, dir->d_name);
+    if (stat(tmp2, &status) < 0)
     {
         ft_printf("Status info couldn't be taken!\n");
         return ;
     }
+    free(tmp1);
+    free(tmp2);
     struct passwd*  userInf = getpwuid(status.st_uid);
     struct group*   groupInf = getgrgid(status.st_gid);
     t_list          *tmp = NULL; 
@@ -179,10 +206,14 @@ static void    listAddBack(t_list **list, dirPoint dir, long *maxSize, long *tot
     obj->acm = getAcm(status.st_mode);
     obj->nlink = status.st_nlink;
     obj->pw_name = ft_strdup(userInf->pw_name);
+    if (maxSize[0] < (long)ft_strlen(obj->pw_name))
+        maxSize[0] = (long)ft_strlen(obj->pw_name);
     obj->gr_name = ft_strdup(groupInf->gr_name);
+    if (maxSize[1] < (long)ft_strlen(obj->gr_name))
+        maxSize[1] = (long)ft_strlen(obj->gr_name);
     obj->size = status.st_size;
-    if (*maxSize < obj->size)
-        *maxSize = obj->size;
+    if (maxSize[2] < obj->size)
+        maxSize[2] = obj->size;
     obj->date = ft_substr(ctime(&status.st_mtim.tv_sec), 4, 13);
     obj->date[ft_strlen(obj->date) - 1] = '\0';
     obj->name = ft_strdup(dir->d_name);
@@ -223,31 +254,42 @@ static void    listAddBack(t_list **list, dirPoint dir, long *maxSize, long *tot
 //      Return Value
 //          The closedir() function returns 0 on success. On error, -1 is returned, and errno is set appropriately.
 
-int ls(const char *modes, DIR *directory)
+void    delList(void *e)
 {
-    long    maxSize = 0;
+    t_listF* arg = (t_listF*)e;
+    free(arg->acm);
+    free(arg->pw_name);
+    free(arg->gr_name);
+    free(arg->date);
+    free(arg->name);
+}
+
+int ls(const char *modes, t_dir *directory)
+{
+    long    maxSize[3] = {0,0,0};
     long    total = 0;
     t_list* list = NULL;
 
-    dirPoint dir = readdir(directory);
+    dirPoint dir = readdir(directory->dir);
     while(dir)
     {
         // size için hepsinin size ını bilip ona göre listele(hizalamak için)
         if (dir->d_name[0] == '.' && modes[0] != 'a')
         {
-            dir = readdir(directory);
+            dir = readdir(directory->dir);
             continue ;
         }
         if (modes[1] == 'l')
-            listAddBack(&list, dir, &maxSize, &total);
+            listAddBack(&list, directory->path, dir, maxSize, &total);
         else
             ft_printf("%s  ", dir->d_name);
         //free(userInf);
-        dir = readdir(directory);
+        dir = readdir(directory->dir);
     }
     if (modes[1] == 'l')
         printList(list, maxSize, total);
     else
         ft_printf("\n");
+    ft_lstclear(&list, &delList);
     return(0);
 }

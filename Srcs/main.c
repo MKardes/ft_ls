@@ -58,6 +58,13 @@ void listRecursive(int i)
     listRecursive(i);
 }
 
+void    delDirs(void *e)
+{
+    t_dir* arg = (t_dir*)e;
+    closedir(arg->dir);
+    free(arg->path);
+}
+
 int main(int ac, char *argv[])
 {
     t_list  *directories;
@@ -71,9 +78,9 @@ int main(int ac, char *argv[])
         return(-1);
     while (directories)
     {
-
-        res = ls(modes, directories->content);
+        res = ls(modes, (t_dir *)directories->content);
         directories = directories->next;
     }
+    ft_lstclear(&directories, &delDirs);
     return(res);
 }

@@ -2,6 +2,7 @@
 # define FT_LS_H
 
 # include "libft.h"
+# include <dirent.h>
 # define MAX_MODES 5
 
 typedef struct s_listF {
@@ -13,6 +14,11 @@ typedef struct s_listF {
     char*   date;
     char*   name;
 } t_listF;
+
+typedef struct s_dir {
+    DIR*    dir;
+    char*   path;
+} t_dir;
 
 typedef struct dirent* dirPoint;
 

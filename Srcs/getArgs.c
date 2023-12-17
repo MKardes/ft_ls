@@ -5,21 +5,22 @@
 
 // t_list: 
 //  {
-//      DIR  *content;
+//      t_dir *content
 //      void *next
 //  }
 static t_list  *dirs(char **dirs)
 {
     t_list* res = NULL;
     t_list* tmp = NULL;
+    DIR*    open = NULL;
+    t_dir*  dir = NULL;
     int     i;
-    DIR*    dir = NULL;
     
     i = 0;
     while (dirs[i])
     {
-        dir = opendir(dirs[i]);
-        if (!dir)
+        open = opendir(dirs[i]);
+        if (!open)
         {
             char error[100] = "ft_ls: cannot access '";
             ft_strlcat(error, dirs[i], ft_strlen(dirs[i]) + 23);
@@ -28,6 +29,11 @@ static t_list  *dirs(char **dirs)
         }
         else
         {
+            dir = (t_dir *)malloc(sizeof(t_dir));
+            if (!dir)
+                return (NULL);
+            dir->dir = open;
+            dir->path = ft_strdup(dirs[i]);
             tmp = ft_lstnew(dir);
             ft_lstadd_back(&res, tmp);
         }
@@ -37,10 +43,6 @@ static t_list  *dirs(char **dirs)
     while (dirs[++i])
         free(dirs[i]);
     free(dirs);
-    while (res)
-    {
-        res = res->next;
-    }
     return (res);
 }
 
