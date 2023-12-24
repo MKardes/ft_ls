@@ -27,15 +27,15 @@ char* getAcm(int n)
         acm[i] = '-';
     if (S_ISDIR(n))
         acm[0] = 'd';
-    else if (S_ISCHR(n))
+    if (S_ISCHR(n))
         acm[0] = 'c';
-    else if (S_ISBLK(n))
+    if (S_ISBLK(n))
         acm[0] = 'b';
-    else if (S_ISFIFO(n))
+    if (S_ISFIFO(n))
         acm[0] = 'p';
-    else if (S_ISLNK(n))
+    if (S_ISLNK(n))
         acm[0] = 'l';
-    else if (S_ISSOCK(n))
+    if (S_ISSOCK(n))
         acm[0] = 's';
     if (n & S_IRUSR)
         acm[1] = 'r';

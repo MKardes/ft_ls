@@ -55,11 +55,6 @@
 
 //◦ strerror
 
-void listRecursive(int i)
-{
-    listRecursive(i);
-}
-
 void    delDirs(void *e)
 {
     t_dir* arg = (t_dir*)e;

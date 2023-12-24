@@ -204,13 +204,12 @@ static char    lListAddBack(t_list **list, const char *path, dirPoint dir, long 
     struct stat status;
     char        *tmp1 = ft_strjoin(path, "/");
     char        *tmp2 = ft_strjoin(tmp1, dir->d_name);
-    if (stat(tmp2, &status) < 0)
+    if (lstat(tmp2, &status) < 0)
     {
         ft_printf("Status info couldn't be taken!\n");
         return '\0';
     }
     free(tmp1);
-    free(tmp2);
     struct passwd*  userInf = getpwuid(status.st_uid);
     struct group*   groupInf = getgrgid(status.st_gid);
     t_list          *tmp = NULL; 
@@ -228,12 +227,26 @@ static char    lListAddBack(t_list **list, const char *path, dirPoint dir, long 
     obj->size = status.st_size;
     if (maxSize[2] < obj->size)
         maxSize[2] = obj->size;
-    obj->date = ft_substr(ctime(&status.st_mtim.tv_sec), 4, 13);
+    obj->date = ft_substr(ctime(&status.st_mtime), 4, 13);
+    // obj->date = ft_substr(ctime(&status.st_mtim.tv_sec), 4, 13);
     obj->date[ft_strlen(obj->date) - 1] = '\0';
     obj->name = ft_strdup(dir->d_name);
     tmp = ft_lstnew(obj);
     ft_lstadd_back(list, tmp);
-    *total += status.st_blocks / 2;
+    *total += status.st_blocks;
+    if (obj->acm[0] == 'l')
+    {
+        char link_path[1024];
+        int  byte = readlink(tmp2, link_path, 1024);
+        link_path[byte] = '\0'; 
+        char *tmp = obj->name;
+        obj->name = ft_strjoin(tmp, " -> ");
+        free(tmp);
+        tmp = obj->name;
+        obj->name = ft_strjoin(tmp, link_path);
+    }
+    free(tmp2);
+    // *total += status.st_blocks / 2;
     return (obj->acm[0]);
 }
 
@@ -360,7 +373,7 @@ int ls(const char *modes, t_dir *directory, bool flag)
             type = lListAddBack(&list, directory->path, dir, maxSize, &total);
         else
             type = listAddBack(&list, directory->path, dir->d_name);
-        if (modes[2] == 'R' && type == 'd')
+        if (modes[2] == 'R' && type == 'd' /* && strcmp() */)
         {
             t_dir* recDir = openDir(directory->path, dir->d_name);
             ls(modes, recDir, flag);
