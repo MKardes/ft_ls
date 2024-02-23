@@ -22,77 +22,78 @@ static int	digit_count(long n)
 	return (i + 1);
 }
 
-static char *getSize(int maxDigitCount, long size)
+static char	*getSize(int maxDigitCount, long size)
 {
-    int     i;
-    int     digitCount;
-    char    *res = NULL;
-    char    *sizeStr;
+	int		i;
+	int		digitCount;
+	char	*res;
+	char	*sizeStr;
 
-    res = (char *)malloc(sizeof(char) * maxDigitCount + 1);
-    digitCount = digit_count(size);
-    i = -1;
-    while (++i < maxDigitCount - digitCount)
-        res[i] = ' ';
-    res[i] = '\0';
-    sizeStr = ft_ltoa(size);
-    ft_strlcat(res, sizeStr, ft_strlen(res) + ft_strlen(sizeStr) + 1);
-    free(sizeStr);
-    return res;
+	res = (char *)malloc(sizeof(char) * maxDigitCount + 1);
+	if (!res)
+		return (NULL);
+	digitCount = digit_count(size);
+	i = -1;
+	while (++i < maxDigitCount - digitCount)
+		res[i] = ' ';
+	res[i] = '\0';
+	sizeStr = ft_ltoa(size);
+	ft_strlcat(res, sizeStr, ft_strlen(res) + ft_strlen(sizeStr) + 1);
+	free(sizeStr);
+	return (res);
 }
 
-static char *addSpaces(char *str, long size)
+static char	*addSpaces(char *str, long size)
 {
-    int     i;
-    int     len;
-    char    *res = NULL;
-    char    *spcs = NULL;
+	int		i;
+	int		len;
+	char	*res;
+	char	*spcs;
 
-    if (size <= (long)ft_strlen(str))
-        return (str);
-    len = size - ft_strlen(str);
-    spcs = (char *)malloc(sizeof(char) * (len + 1));
-    spcs[len] = '\0';
-    i = -1;
-    while (++i < len) 
-        spcs[i] = ' ';
-    res = ft_strjoin(str, spcs);
-    free(spcs);
-    free(str);
-    return (res);
+	res = NULL;
+	spcs = NULL;
+	if (size <= (long)ft_strlen(str))
+		return (str);
+	len = size - ft_strlen(str);
+	spcs = (char *)malloc(sizeof(char) * (len + 1));
+	spcs[len] = '\0';
+	i = -1;
+	while (++i < len) 
+		spcs[i] = ' ';
+	res = ft_strjoin(str, spcs);
+	free(spcs);
+	free(str);
+	return (res);
 }
 
-static void printList(t_list *list, long maxSize[3], long total, const char *path)
+static void	printList(t_list *list, long maxSize[3], long total, const char *path)
 {
-    int         maxDigitCount;
-    char*       fileSize;
-    t_listF*    c = NULL;
-    
-    if (path)
-        ft_printf("\n%s:\n", path);
-    if (total == -1)
-    {
-        // lists without -l
-        while (list)
-        {
-            ft_printf("%s  ", list->content);
-            list = list->next;
-        }
-        ft_printf("\n");
-        return ;
-    }
-    maxDigitCount = digit_count(maxSize[2]);
-    ft_printf("total %ld\n", total);
-    while (list)
-    {
-        c = list->content;
-        fileSize = getSize(maxDigitCount, c->size);
-        c->pw_name = addSpaces(c->pw_name, maxSize[0]);
-        c->gr_name = addSpaces(c->gr_name, maxSize[1]);
-        ft_printf("%s %ld %s %s %s %s %s\n", c->acm, c->nlink, c->pw_name, c->gr_name, fileSize, c->date, c->name);
-        free(fileSize);
-        list = list->next;
-    }
+	t_listF	*(c) = NULL;
+	char *(fileSize) = NULL;
+	int (maxDigitCount) = digit_count(maxSize[2]);
+	if (path)
+		ft_printf("\n%s:\n", path);
+	if (total == -1)
+	{
+		while (list)
+		{
+			ft_printf("%s  ", list->content);
+			list = list->next;
+		}
+		ft_printf("\n");
+		return ;
+	}
+	ft_printf("total %ld\n", total);
+	while (list)
+	{
+		c = list->content;
+		fileSize = getSize(maxDigitCount, c->size);
+		c->pw_name = addSpaces(c->pw_name, maxSize[0]);
+		c->gr_name = addSpaces(c->gr_name, maxSize[1]);
+		ft_printf("%s %ld %s %s %s %s %s\n", c->acm, c->nlink, c->pw_name, c->gr_name, fileSize, c->date, c->name);
+		free(fileSize);
+		list = list->next;
+	}
 }
 
 //#include <sys/stat.h>
@@ -201,72 +202,71 @@ static void printList(t_list *list, long maxSize[3], long total, const char *pat
 
 static char    lListAddBack(t_list **list, const char *path, dirPoint dir, long *maxSize, long *total)
 {
-    struct stat status;
-    char        *tmp1 = ft_strjoin(path, "/");
-    char        *tmp2 = ft_strjoin(tmp1, dir->d_name);
-    if (lstat(tmp2, &status) < 0)
-    {
-        ft_printf("Status info couldn't be taken!\n");
-        return '\0';
-    }
-    free(tmp1);
-    struct passwd*  userInf = getpwuid(status.st_uid);
-    struct group*   groupInf = getgrgid(status.st_gid);
-    t_list          *tmp = NULL; 
-    t_listF         *obj = NULL;
-
-    obj = (t_listF *)malloc(sizeof(t_listF));
-    obj->acm = getAcm(status.st_mode);
-    obj->nlink = status.st_nlink;
-    obj->pw_name = ft_strdup(userInf->pw_name);
-    if (maxSize[0] < (long)ft_strlen(obj->pw_name))
-        maxSize[0] = (long)ft_strlen(obj->pw_name);
-    obj->gr_name = ft_strdup(groupInf->gr_name);
-    if (maxSize[1] < (long)ft_strlen(obj->gr_name))
-        maxSize[1] = (long)ft_strlen(obj->gr_name);
-    obj->size = status.st_size;
-    if (maxSize[2] < obj->size)
-        maxSize[2] = obj->size;
-    obj->date = ft_substr(ctime(&status.st_mtime), 4, 13);
-    // obj->date = ft_substr(ctime(&status.st_mtim.tv_sec), 4, 13);
-    obj->date[ft_strlen(obj->date) - 1] = '\0';
-    obj->name = ft_strdup(dir->d_name);
-    tmp = ft_lstnew(obj);
-    ft_lstadd_back(list, tmp);
-    *total += status.st_blocks;
-    if (obj->acm[0] == 'l')
-    {
-        char link_path[1024];
-        int  byte = readlink(tmp2, link_path, 1024);
-        link_path[byte] = '\0'; 
-        char *tmp = obj->name;
-        obj->name = ft_strjoin(tmp, " -> ");
-        free(tmp);
-        tmp = obj->name;
-        obj->name = ft_strjoin(tmp, link_path);
-    }
-    free(tmp2);
-    // *total += status.st_blocks / 2;
-    return (obj->acm[0]);
+	struct stat (status) = {};
+	char *(tmp1) = ft_strjoin(path, "/");
+	char *(tmp2) = ft_strjoin(tmp1, dir->d_name);
+	if (lstat(tmp2, &status) < 0)
+	{
+		ft_printf("Status info couldn't be taken!\n");
+		return '\0';
+	}
+	free(tmp1);
+	struct passwd *(userInf) = getpwuid(status.st_uid);
+	struct group *(groupInf) = getgrgid(status.st_gid);
+	t_list *(tmp) = NULL; 
+	t_listF *(obj) = NULL;
+	obj = (t_listF *)malloc(sizeof(t_listF));
+	obj->acm = get_acm(status.st_mode);
+	obj->nlink = status.st_nlink;
+	obj->pw_name = ft_strdup(userInf->pw_name);
+	if (maxSize[0] < (long)ft_strlen(obj->pw_name))
+		maxSize[0] = (long)ft_strlen(obj->pw_name);
+	obj->gr_name = ft_strdup(groupInf->gr_name);
+	if (maxSize[1] < (long)ft_strlen(obj->gr_name))
+		maxSize[1] = (long)ft_strlen(obj->gr_name);
+	obj->size = status.st_size;
+	if (maxSize[2] < obj->size)
+		maxSize[2] = obj->size;
+	obj->date = ft_substr(ctime(&status.st_mtime), 4, 13);
+	// obj->date = ft_substr(ctime(&status.st_mtim.tv_sec), 4, 13);
+	obj->date[ft_strlen(obj->date) - 1] = '\0';
+	obj->name = ft_strdup(dir->d_name);
+	tmp = ft_lstnew(obj);
+	ft_lstadd_back(list, tmp);
+	*total += status.st_blocks;
+	if (obj->acm[0] == 'l')
+	{
+		char link_path[1024];
+		int  byte = readlink(tmp2, link_path, 1024);
+		link_path[byte] = '\0'; 
+		char *tmp = obj->name;
+		obj->name = ft_strjoin(tmp, " -> ");
+		free(tmp);
+		tmp = obj->name;
+		obj->name = ft_strjoin(tmp, link_path);
+	}
+	free(tmp2);
+	// *total += status.st_blocks / 2;
+	return (obj->acm[0]);
 }
 
 static char    listAddBack(t_list **list, const char *path, const char *dir_name)
 {
-    struct stat status;
-    t_list      *tmp = NULL;
-    char        *tmp1 = ft_strjoin(path, "/");
-    char        *tmp2 = ft_strjoin(tmp1, dir_name);
+	struct stat status;
+	t_list      *tmp = NULL;
+	char        *tmp1 = ft_strjoin(path, "/");
+	char        *tmp2 = ft_strjoin(tmp1, dir_name);
 
-    stat(tmp2, &status);
-    free(tmp1);
-    free(tmp2);
-    tmp = ft_lstnew(ft_strdup(dir_name));
-    ft_lstadd_back(list, tmp);
-    if (S_ISDIR(status.st_mode))
-        return ('d');
-    if (S_ISLNK(status.st_mode))
-        return ('l');
-    return ('\0');
+	stat(tmp2, &status);
+	free(tmp1);
+	free(tmp2);
+	tmp = ft_lstnew(ft_strdup(dir_name));
+	ft_lstadd_back(list, tmp);
+	if (S_ISDIR(status.st_mode))
+		return ('d');
+	if (S_ISLNK(status.st_mode))
+		return ('l');
+	return ('\0');
 }
 
 //#include <dirent.h>
@@ -303,93 +303,93 @@ static char    listAddBack(t_list **list, const char *path, const char *dir_name
 
 void    delLList(void *e)
 {
-    t_listF* arg = (t_listF*)e;
-    free(arg->acm);
-    free(arg->pw_name);
-    free(arg->gr_name);
-    free(arg->date);
-    free(arg->name);
-    free(arg);
+	t_listF* arg = (t_listF*)e;
+	free(arg->acm);
+	free(arg->pw_name);
+	free(arg->gr_name);
+	free(arg->date);
+	free(arg->name);
+	free(arg);
 }
 
 void    delList(void *e)
 {
-    free(e);
+	free(e);
 }
 
 t_dir* openDir(const char* dir_path, const char*  dir_name)
 {
-    DIR*    open = NULL;
-    t_dir*  dir = NULL;
+	DIR*    open = NULL;
+	t_dir*  dir = NULL;
 
-    open = opendir(dir_name);
-    if (!open)
-    {
-        char error[100];
-        if (errno == EACCES)
-            ft_strlcpy(error, "ft_ls: cannot open directory '", 28);
-        else
-            ft_strlcpy(error, "ft_ls: cannot access '", 23);
-        ft_strlcat(error, dir_name, ft_strlen(dir_name) + ft_strlen(error) + 1);
-        ft_strlcat(error, "'", ft_strlen(error) + 2);
-        perror(error);
-        return (NULL);
-    }
-    else
-    {
-        char* tmp = ft_strjoin(dir_path, "/");
-        dir = (t_dir *)malloc(sizeof(t_dir));
-        if (!dir)
-            return (NULL);
-        dir->dir = open;
-        dir->path = ft_strjoin(tmp, dir_name);
-        free(tmp);
-    }
-    return (dir);
+	open = opendir(dir_name);
+	if (!open)
+	{
+		char error[100];
+		if (errno == EACCES)
+			ft_strlcpy(error, "ft_ls: cannot open directory '", 28);
+		else
+			ft_strlcpy(error, "ft_ls: cannot access '", 23);
+		ft_strlcat(error, dir_name, ft_strlen(dir_name) + ft_strlen(error) + 1);
+		ft_strlcat(error, "'", ft_strlen(error) + 2);
+		perror(error);
+		return (NULL);
+	}
+	else
+	{
+		char* tmp = ft_strjoin(dir_path, "/");
+		dir = (t_dir *)malloc(sizeof(t_dir));
+		if (!dir)
+			return (NULL);
+		dir->dir = open;
+		dir->path = ft_strjoin(tmp, dir_name);
+		free(tmp);
+	}
+	return (dir);
 }
 
 int ls(const char *modes, t_dir *directory, bool flag)
 {
-    long    maxSize[3] = {0,0,0};
-    long    total = 0;
-    t_list* list = NULL;
-    char*   path = NULL;
-    char    type;
+	long    maxSize[3] = {0,0,0};
+	long    total = 0;
+	t_list* list = NULL;
+	char*   path = NULL;
+	char    type;
 
-    if (!directory)
-        return(2);
-    if (flag)
-        path = directory->path;
-    dirPoint dir = readdir(directory->dir);
-    while(dir)
-    {
-        // size için hepsinin size ını bilip ona göre listele(hizalamak için)
-        if (dir->d_name[0] == '.' && modes[0] != 'a')
-        {
-            dir = readdir(directory->dir);
-            continue ;
-        }
-        if (modes[1] == 'l')
-            type = lListAddBack(&list, directory->path, dir, maxSize, &total);
-        else
-            type = listAddBack(&list, directory->path, dir->d_name);
-        if (modes[2] == 'R' && type == 'd' /* && strcmp() */)
-        {
-            t_dir* recDir = openDir(directory->path, dir->d_name);
-            ls(modes, recDir, flag);
-            delDirs(recDir);
-        }
-        dir = readdir(directory->dir);
-    }
-    if (modes[1] == 'l')
-    {
-        printList(list, maxSize, total, path);
-        ft_lstclear(&list, &delLList);
-    }
-    else
-    {
-        printList(list, maxSize, -1, path);
-        ft_lstclear(&list, &delList);
-    }
-    return(0);
+	if (!directory)
+		return(2);
+	if (flag)
+		path = directory->path;
+	dirPoint dir = readdir(directory->dir);
+	while(dir)
+	{
+		// size için hepsinin size ını bilip ona göre listele(hizalamak için)
+		if (dir->d_name[0] == '.' && modes[0] != 'a')
+		{
+			dir = readdir(directory->dir);
+			continue ;
+		}
+		if (modes[1] == 'l')
+			type = lListAddBack(&list, directory->path, dir, maxSize, &total);
+		else
+			type = listAddBack(&list, directory->path, dir->d_name);
+		if (modes[2] == 'R' && type == 'd' /* && strcmp() */)
+		{
+			t_dir* recDir = openDir(directory->path, dir->d_name);
+			ls(modes, recDir, flag);
+			del_dirs(recDir);
+		}
+		dir = readdir(directory->dir);
+	}
+	if (modes[1] == 'l')
+	{
+		printList(list, maxSize, total, path);
+		ft_lstclear(&list, &delLList);
+	}
+	else
+	{
+		printList(list, maxSize, -1, path);
+		ft_lstclear(&list, &delList);
+	}
+	return(0);
 }

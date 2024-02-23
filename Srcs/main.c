@@ -9,8 +9,6 @@
 #include <time.h>
 #include <stdbool.h>
 
-
-
 //Hint: ls could be use with a file or folder
 
 /* First */
@@ -18,15 +16,16 @@
 //    qqlist subdirectories recursively
 
 //-l     use a long listing format
-//          The -l option signifies the long list format.
-//          This shows a lot more information presented to the user than the standard command. You will see the file permissions,
-//          the number of links, owner name, owner group, file size, time of last modification, and the file or directory name. 
-//
-//          > What 'total 8' stands for?
-//          > Thank you very much.
-//          That is the total number of file system blocks, including indirect
-//          blocks, used by the listed files.  If you run "ls -s" on the same
-//          files and sum the reported numbers you'll get that same number.
+//			The -l option signifies the long list format.
+//			This shows a lot more information presented to the user than the
+//			standard command. You will see the file permissions, the number of
+//			links, owner name, owner group, file size, time of last
+//			modification, and the file or directory name.
+//			> What 'total 8' stands for?
+//			> Thank you very much.
+//			That is the total number of file system blocks, including indirect
+//			blocks, used by the listed files.  If you run "ls -s" on the same
+//			files and sum the reported numbers you'll get that same number.
 
 //-a, --all
 //    do not ignore entries starting with .
@@ -36,18 +35,15 @@
 
 //-t     sort by time, newest first; see --time
 
-
 //You do not have to deal with the multiple column format for the exit when
 //the option -l isn’t in the arguments
 
-//You are not required to deal with ACL and extended attributes. --> Access Control List
-
+//	You are not required to deal with ACL 
+//	and extended attributes. --> Access Control List
 
 //◦ getfattr -d -m - /path/to/your/file
 
-
 //◦ getxattr
-
 
 //◦ readlink
 
@@ -55,33 +51,35 @@
 
 //◦ strerror
 
-void    delDirs(void *e)
+void	del_dirs(void *e)
 {
-    t_dir* arg = (t_dir*)e;
-    closedir(arg->dir);
-    free(arg->path);
-    free(arg);
+	t_dir *(arg) = (t_dir *)e;
+	closedir(arg->dir);
+	free(arg->path);
+	free(arg);
 }
 
-int main(int ac, char *argv[])
+int	main(int ac, char *argv[])
 {
-    t_list  *directories;
-    char    modes[MAX_MODES];
-    int     f_cnt;
-    int     res = 0;
-    bool    flag = 1;
+	t_list	*directories;
+	char	modes[MAX_MODES];
+	int		f_cnt;
+	int		res;
+	bool	flag;
 
-    f_cnt = getFlags(ac, argv, modes);
-    directories = getDirectories(ac, argv, ac - f_cnt - 1);
-    if (!directories)
-        return(-1);
-    if ((ac - f_cnt - 1 == 0 || ac - f_cnt - 1 == 1) && modes[2] != 'R')
-        flag = 0;
-    while (directories)
-    {
-        res = ls(modes, (t_dir *)directories->content, flag);
-        directories = directories->next;
-    }
-    ft_lstclear(&directories, &delDirs);
-    return(res);
+	res = 0;
+	flag = 1;
+	f_cnt = get_flags(ac, argv, modes);
+	directories = get_directories(ac, argv, ac - f_cnt - 1);
+	if (!directories)
+		return (-1);
+	if ((ac - f_cnt - 1 == 0 || ac - f_cnt - 1 == 1) && modes[2] != 'R')
+		flag = 0;
+	while (directories)
+	{
+		res = ls(modes, (t_dir *)directories->content, flag);
+		directories = directories->next;
+	}
+	ft_lstclear(&directories, &del_dirs);
+	return (res);
 }

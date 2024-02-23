@@ -26,16 +26,16 @@ typedef struct s_dir {
 typedef struct dirent* dirPoint;
 
 /* acm.c */
-char* getAcm(int n);
+char* get_acm(int n);
 
 /* getArgs.c */
-t_list  *getDirectories(int ac, char *argv[], int dir_cnt);
-int     getFlags(int ac, char *argv[], char *modes);
+t_list  *get_directories(int ac, char *argv[], int dir_cnt);
+int     get_flags(int ac, char *argv[], char *modes);
 
 /* ls.c */
 int ls(const char *modes, t_dir *directory, bool flag);
 
 /* main.c */
-void    delDirs(void *e);
+void    del_dirs(void *e);
 
 #endif
