@@ -56,7 +56,6 @@ static t_list	*dirs(char **dirs)
 }
 
 // checks if a directory or file present in arguments
-
 t_list	*get_directories(int ac, char *argv[], int dir_cnt)
 {
 	int (i) = 0;
@@ -69,15 +68,17 @@ t_list	*get_directories(int ac, char *argv[], int dir_cnt)
 			return (NULL);
 		dir_strs[0] = ft_strdup(".");
 		dir_strs[1] = NULL;
-		return (dirs(dir_strs));
 	}
-	dir_strs = (char **)malloc(sizeof(char *) * (dir_cnt + 1));
-	if (!dir_strs)
-		return (NULL);
-	dir_strs[dir_cnt] = NULL;
-	while (++i < ac)
-		if (argv[i][0] != '-')
-			dir_strs[dirI++] = ft_strdup(argv[i]);
+	else {
+		dir_strs = (char **)malloc(sizeof(char *) * (dir_cnt + 1));
+		if (!dir_strs)
+			return (NULL);
+		dir_strs[dir_cnt] = NULL;
+		while (++i < ac) {
+			if (argv[i][0] != '-')
+				dir_strs[dirI++] = ft_strdup(argv[i]);
+		}
+	}
 	return (dirs(dir_strs));
 }
 
@@ -100,7 +101,7 @@ static void	fill_modes(char *opt, char *modes)
 			modes[4] = 't';
 		else
 		{
-			write(1, "ls: option requires an argument -- '", 36);
+			write(1, "ls: undefined option -- '", 25);
 			ft_printf("%c", opt[j]);
 			write(1, "'\n", 3);
 			exit(2);
@@ -112,7 +113,6 @@ static void	fill_modes(char *opt, char *modes)
 int	get_flags(int ac, char *argv[], char *modes)
 {
 	int (i) = 0;
-	int (j) = 1;
 	int (cnt) = 0;
 	ft_memset(modes, '-', MAX_MODES);
 	while (++i < ac)
@@ -120,7 +120,6 @@ int	get_flags(int ac, char *argv[], char *modes)
 		if (argv[i][0] == '-')
 		{
 			cnt++;
-			j = 0;
 			fill_modes(argv[i], modes);
 		}
 	}
