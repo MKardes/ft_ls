@@ -205,12 +205,13 @@ static char    lListAddBack(t_list **list, const char *path, dirPoint dir, long 
 	struct stat (status) = {};
 	char *(tmp1) = ft_strjoin(path, "/");
 	char *(tmp2) = ft_strjoin(tmp1, dir->d_name);
+	free(tmp1);
 	if (lstat(tmp2, &status) < 0)
 	{
 		ft_printf("Status info couldn't be taken!\n");
+		free(tmp2);
 		return '\0';
 	}
-	free(tmp1);
 	struct passwd *(userInf) = getpwuid(status.st_uid);
 	struct group *(groupInf) = getgrgid(status.st_gid);
 	t_list *(tmp) = NULL; 
@@ -233,7 +234,6 @@ static char    lListAddBack(t_list **list, const char *path, dirPoint dir, long 
 	obj->name = ft_strdup(dir->d_name);
 	tmp = ft_lstnew(obj);
 	ft_lstadd_back(list, tmp);
-	*total += status.st_blocks;
 	if (obj->acm[0] == 'l')
 	{
 		char link_path[1024];
@@ -246,6 +246,7 @@ static char    lListAddBack(t_list **list, const char *path, dirPoint dir, long 
 		obj->name = ft_strjoin(tmp, link_path);
 	}
 	free(tmp2);
+	*total += status.st_blocks;
 	// *total += status.st_blocks / 2;
 	return (obj->acm[0]);
 }
@@ -322,7 +323,10 @@ t_dir* openDir(const char* dir_path, const char*  dir_name)
 	DIR*    open = NULL;
 	t_dir*  dir = NULL;
 
-	open = opendir(dir_name);
+	char* tmp = ft_strjoin(dir_path, "/");
+	char* path = ft_strjoin(tmp, dir_name);
+	free(tmp);
+	open = opendir(path);
 	if (!open)
 	{
 		char error[100];
@@ -330,20 +334,19 @@ t_dir* openDir(const char* dir_path, const char*  dir_name)
 			ft_strlcpy(error, "ft_ls: cannot open directory '", 28);
 		else
 			ft_strlcpy(error, "ft_ls: cannot access '", 23);
-		ft_strlcat(error, dir_name, ft_strlen(dir_name) + ft_strlen(error) + 1);
+		ft_strlcat(error, path, ft_strlen(path) + ft_strlen(error) + 1);
 		ft_strlcat(error, "'", ft_strlen(error) + 2);
+		free(path);
 		perror(error);
 		return (NULL);
 	}
 	else
 	{
-		char* tmp = ft_strjoin(dir_path, "/");
 		dir = (t_dir *)malloc(sizeof(t_dir));
 		if (!dir)
 			return (NULL);
 		dir->dir = open;
-		dir->path = ft_strjoin(tmp, dir_name);
-		free(tmp);
+		dir->path = path;
 	}
 	return (dir);
 }
@@ -373,7 +376,7 @@ int ls(const char *modes, t_dir *directory, bool flag)
 			type = lListAddBack(&list, directory->path, dir, maxSize, &total);
 		else
 			type = listAddBack(&list, directory->path, dir->d_name);
-		if (modes[2] == 'R' && type == 'd' /* && strcmp() */)
+		if (modes[2] == 'R' && type == 'd' /* && strcmp() */) // type == f
 		{
 			t_dir* recDir = openDir(directory->path, dir->d_name);
 			ls(modes, recDir, flag);
