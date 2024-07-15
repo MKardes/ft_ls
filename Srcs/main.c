@@ -64,6 +64,7 @@ void	del_dirs(void *e)
 int	main(int ac, char *argv[])
 {
 	t_list	*directories;
+	t_list	*root;
 	char	modes[MAX_MODES];
 	int		f_cnt;
 	int		res;
@@ -75,6 +76,7 @@ int	main(int ac, char *argv[])
 	directories = get_directories(ac, argv, ac - f_cnt - 1);
 	if (!directories)
 		return (-1);
+	root = directories;
 	if ((ac - f_cnt - 1 == 0 || ac - f_cnt - 1 == 1) && modes[2] != 'R')
 		flag = 0;
 	while (directories)
@@ -82,6 +84,6 @@ int	main(int ac, char *argv[])
 		res = ls(modes, (t_dir *)directories->content, flag);
 		directories = directories->next;
 	}
-	ft_lstclear(&directories, &del_dirs);
+	ft_lstclear(&root, &del_dirs);
 	return (res);
 }

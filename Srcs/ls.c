@@ -322,10 +322,15 @@ t_dir* openDir(const char* dir_path, const char*  dir_name)
 {
 	DIR*    open = NULL;
 	t_dir*  dir = NULL;
-
-	char* tmp = ft_strjoin(dir_path, "/");
-	char* path = ft_strjoin(tmp, dir_name);
-	free(tmp);
+	char*	path = NULL;
+	
+	if(dir_path[ft_strlen(dir_path) - 1] != '/'){
+		char* tmp = ft_strjoin(dir_path, "/");
+		path = ft_strjoin(tmp, dir_name);
+		free(tmp);
+	}
+	else
+		path = ft_strjoin(dir_path, dir_name);
 	open = opendir(path);
 	if (!open)
 	{
@@ -376,7 +381,7 @@ int ls(const char *modes, t_dir *directory, bool flag)
 			type = lListAddBack(&list, directory->path, dir, maxSize, &total);
 		else
 			type = listAddBack(&list, directory->path, dir->d_name);
-		if (modes[2] == 'R' && type == 'd' /* && strcmp() */) // type == f
+		if (modes[2] == 'R' && type == 'd' && ft_strncmp(dir->d_name, "..", 3) != 0 && ft_strncmp(dir->d_name, ".", 2) != 0) // type == f
 		{
 			t_dir* recDir = openDir(directory->path, dir->d_name);
 			ls(modes, recDir, flag);

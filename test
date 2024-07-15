@@ -1,1 +1,3 @@
 ./ft_ls . . .. . .. .
+./ft_ls -Ral . . .
+./ft_ls -Raa -a -R -a

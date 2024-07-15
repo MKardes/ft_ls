@@ -3,7 +3,7 @@ CC = gcc
 LIBFT = Libft/libft.a
 F_LIBFT = Libft
 
-FLAGS = -Wall -Wextra -Werror -ILibft -IHead
+FLAGS =  -ILibft -IHead
 SRCS = Srcs/main.c Srcs/getArgs.c Srcs/ls.c Srcs/acm.c 
 
 all: $(NAME)

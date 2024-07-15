@@ -1,0 +1,11 @@
+Hard links point directly to the physical file on disk. Multiple hard links to the same file share the same inode (file metadata).
+if you change one that one will seen in the other one.
+hard link creation:
+ln source_file destination file
+
+Symbolic links (or soft links) are pointers to another file or directory by name. They can span across filesystems.
+soft link creation:
+ln -s target_file symbolic_link_name
+
+The symbolic link points to the name of the target file. So if the name changes, the link is broken.Hard links do not break because 
+they reach the physical file on the disk. 
