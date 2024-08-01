@@ -258,7 +258,7 @@ static char    listAddBack(t_list **list, const char *path, const char *dir_name
 	char        *tmp1 = ft_strjoin(path, "/");
 	char        *tmp2 = ft_strjoin(tmp1, dir_name);
 
-	stat(tmp2, &status);
+	lstat(tmp2, &status);
 	free(tmp1);
 	free(tmp2);
 	tmp = ft_lstnew(ft_strdup(dir_name));
@@ -320,10 +320,11 @@ void    delList(void *e)
 
 t_dir* openDir(const char* dir_path, const char*  dir_name)
 {
-	DIR*    open = NULL;
-	t_dir*  dir = NULL;
-	char*	path = NULL;
-	
+	DIR*   		open = NULL;
+	t_dir* 		dir = NULL;
+	char*		path = NULL;
+	struct stat	info;
+
 	if(dir_path[ft_strlen(dir_path) - 1] != '/'){
 		char* tmp = ft_strjoin(dir_path, "/");
 		path = ft_strjoin(tmp, dir_name);
@@ -331,7 +332,9 @@ t_dir* openDir(const char* dir_path, const char*  dir_name)
 	}
 	else
 		path = ft_strjoin(dir_path, dir_name);
-	open = opendir(path);
+	// to see if the file has loop because of the symbolic links
+	if (lstat(path, &info) == 0)
+		open = opendir(path);
 	if (!open)
 	{
 		char error[100];
@@ -361,6 +364,7 @@ int ls(const char *modes, t_dir *directory, bool flag)
 	long    maxSize[3] = {0,0,0};
 	long    total = 0;
 	t_list* list = NULL;
+	t_list* recDirs = NULL;
 	char*   path = NULL;
 	char    type;
 
@@ -384,8 +388,10 @@ int ls(const char *modes, t_dir *directory, bool flag)
 		if (modes[2] == 'R' && type == 'd' && ft_strncmp(dir->d_name, "..", 3) != 0 && ft_strncmp(dir->d_name, ".", 2) != 0) // type == f
 		{
 			t_dir* recDir = openDir(directory->path, dir->d_name);
-			ls(modes, recDir, flag);
-			del_dirs(recDir);
+			if(recDir != NULL){
+				t_list* entity = ft_lstnew(recDir);
+				ft_lstadd_back(&recDirs, entity);
+			}
 		}
 		dir = readdir(directory->dir);
 	}
@@ -399,5 +405,11 @@ int ls(const char *modes, t_dir *directory, bool flag)
 		printList(list, maxSize, -1, path);
 		ft_lstclear(&list, &delList);
 	}
+	t_list* recRoot = recDirs;
+	while(recDirs){
+		ls(modes, recDirs->content, flag);
+		recDirs = recDirs->next;
+	}
+	ft_lstclear(&recRoot, &del_dirs);
 	return(0);
 }
