@@ -9,13 +9,13 @@
 // [0] = -a, [1] = -l, [2] = -R, [3] = -r, [4] = -t
 
 typedef struct s_listF {
+    char*   name;
     char*   acm;
     long    nlink;
     char*   pw_name;
     char*   gr_name;
     long    size;
     char*   date;
-    char*   name;
 } t_listF;
 
 typedef struct s_dir {

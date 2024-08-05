@@ -1,0 +1,265 @@
+
+.:
+total 2720
+-rw-r--r-- 1 root root 1326015 Jul  9 16:44 en.subject.pdf
+-rwxr-xr-x 1 root root   27520 Aug  5 16:34 ft_ls
+drwxr-xr-x 2 root root    4096 Jul  9 16:44 Head
+drwxr-xr-x 2 root root    4096 Aug  5 16:25 Libft
+-rw-r--r-- 1 root root    9095 Aug  5 16:22 log
+-rw-r--r-- 1 root root       0 Aug  5 16:34 logft
+-rw-r--r-- 1 root root     499 Jul 15 19:09 Makefile
+drwxr-xr-x 2 root root    4096 Jul  9 16:44 Srcs
+-rw-r--r-- 1 root root      63 Jul 15 18:03 test
+drwxr-xr-x 5 root root    4096 Jul 15 19:15 test_dir
+
+./Head:
+total 8
+-rw-r--r-- 1 root root 767 Aug  5 16:14 ft_ls.h
+
+./Libft:
+total 952
+-rw-r--r-- 1 root root  1352 Aug  5 16:25 ft_atoi.o
+-rw-r--r-- 1 root root  1253 Jul  9 16:44 ft_atoi.c
+-rw-r--r-- 1 root root  1256 Aug  5 16:25 ft_bzero.o
+-rw-r--r-- 1 root root   973 Jul  9 16:44 ft_bzero.c
+-rw-r--r-- 1 root root  1576 Aug  5 16:25 ft_calloc.o
+-rw-r--r-- 1 root root  1118 Jul  9 16:44 ft_calloc.c
+-rw-r--r-- 1 root root  1336 Aug  5 16:25 ft_isalnum.o
+-rw-r--r-- 1 root root   980 Jul  9 16:44 ft_isalnum.c
+-rw-r--r-- 1 root root   998 Jul  9 16:44 ft_isalpha.c
+-rw-r--r-- 1 root root  1144 Aug  5 16:25 ft_isalpha.o
+-rw-r--r-- 1 root root  1136 Aug  5 16:25 ft_isascii.o
+-rw-r--r-- 1 root root   968 Jul  9 16:44 ft_isascii.c
+-rw-r--r-- 1 root root   970 Jul  9 16:44 ft_isdigit.c
+-rw-r--r-- 1 root root  1136 Aug  5 16:25 ft_isdigit.o
+-rw-r--r-- 1 root root   970 Jul  9 16:44 ft_isprint.c
+-rw-r--r-- 1 root root  1136 Aug  5 16:25 ft_isprint.o
+-rw-r--r-- 1 root root  2131 Jul  9 16:44 ft_itoa.c
+-rw-r--r-- 1 root root  2560 Aug  5 16:25 ft_itoa.o
+-rw-r--r-- 1 root root  1320 Aug  5 16:25 ft_lstadd_back.o
+-rw-r--r-- 1 root root  1082 Jul  9 16:44 ft_lstadd_back.c
+-rw-r--r-- 1 root root  1160 Aug  5 16:25 ft_lstadd_front.o
+-rw-r--r-- 1 root root  1020 Jul  9 16:44 ft_lstadd_front.c
+-rw-r--r-- 1 root root  1344 Aug  5 16:25 ft_lstclear.o
+-rw-r--r-- 1 root root  1113 Jul  9 16:44 ft_lstclear.c
+-rw-r--r-- 1 root root  1288 Aug  5 16:25 ft_lstdelone.o
+-rw-r--r-- 1 root root  1030 Jul  9 16:44 ft_lstdelone.c
+-rw-r--r-- 1 root root  1168 Aug  5 16:25 ft_lstiter.o
+-rw-r--r-- 1 root root  1061 Jul  9 16:44 ft_lstiter.c
+-rw-r--r-- 1 root root  1038 Jul  9 16:44 ft_lstlast.c
+-rw-r--r-- 1 root root  1152 Aug  5 16:25 ft_lstlast.o
+-rw-r--r-- 1 root root  1208 Jul  9 16:44 ft_lstmap.c
+-rw-r--r-- 1 root root  1480 Aug  5 16:25 ft_lstmap.o
+-rw-r--r-- 1 root root  1093 Jul  9 16:44 ft_lstnew.c
+-rw-r--r-- 1 root root  1288 Aug  5 16:25 ft_lstnew.o
+-rw-r--r-- 1 root root  1144 Aug  5 16:25 ft_lstsize.o
+-rw-r--r-- 1 root root  1021 Jul  9 16:44 ft_lstsize.c
+-rw-r--r-- 1 root root  1176 Aug  5 16:25 ft_memchr.o
+-rw-r--r-- 1 root root  1107 Jul  9 16:44 ft_memchr.c
+-rw-r--r-- 1 root root  1166 Jul  9 16:44 ft_memcmp.c
+-rw-r--r-- 1 root root  1208 Aug  5 16:25 ft_memcmp.o
+-rw-r--r-- 1 root root  1127 Jul  9 16:44 ft_memcpy.c
+-rw-r--r-- 1 root root  1184 Aug  5 16:25 ft_memcpy.o
+-rw-r--r-- 1 root root  1296 Jul  9 16:44 ft_memmove.c
+-rw-r--r-- 1 root root  1272 Aug  5 16:25 ft_memmove.o
+-rw-r--r-- 1 root root  1071 Jul  9 16:44 ft_memset.c
+-rw-r--r-- 1 root root  1152 Aug  5 16:25 ft_memset.o
+-rw-r--r-- 1 root root  3848 Aug  5 16:25 ft_printf.o
+-rw-r--r-- 1 root root  2439 Jul  9 16:44 ft_printf.c
+-rw-r--r-- 1 root root  2496 Aug  5 16:25 ft_printf_1.o
+-rw-r--r-- 1 root root  1754 Jul  9 16:44 ft_printf_1.c
+-rw-r--r-- 1 root root   970 Jul  9 16:44 ft_putchar_fd.c
+-rw-r--r-- 1 root root  1272 Aug  5 16:25 ft_putchar_fd.o
+-rw-r--r-- 1 root root  1512 Aug  5 16:25 ft_putendl_fd.o
+-rw-r--r-- 1 root root  1022 Jul  9 16:44 ft_putendl_fd.c
+-rw-r--r-- 1 root root  1736 Aug  5 16:25 ft_putnbr_fd.o
+-rw-r--r-- 1 root root  1169 Jul  9 16:44 ft_putnbr_fd.c
+-rw-r--r-- 1 root root  1344 Aug  5 16:25 ft_putstr_fd.o
+-rw-r--r-- 1 root root  1000 Jul  9 16:44 ft_putstr_fd.c
+-rw-r--r-- 1 root root  2099 Jul  9 16:44 ft_split.c
+-rw-r--r-- 1 root root  2176 Aug  5 16:25 ft_split.o
+-rw-r--r-- 1 root root  1184 Aug  5 16:25 ft_strchr.o
+-rw-r--r-- 1 root root  1068 Jul  9 16:44 ft_strchr.c
+-rw-r--r-- 1 root root  1264 Aug  5 16:25 ft_strcmp.o
+-rw-r--r-- 1 root root  1167 Aug  5 16:26 ft_strcmp.c
+-rw-r--r-- 1 root root  1081 Aug  5 15:30 ft_strcpy_func.c
+-rw-r--r-- 1 root root  1224 Aug  5 16:25 ft_strcpy_func.o
+-rw-r--r-- 1 root root  1164 Jul  9 16:44 ft_strdup.c
+-rw-r--r-- 1 root root  1424 Aug  5 16:25 ft_strdup.o
+-rw-r--r-- 1 root root  1063 Jul  9 16:44 ft_striteri.c
+-rw-r--r-- 1 root root  1184 Aug  5 16:25 ft_striteri.o
+-rw-r--r-- 1 root root  1704 Aug  5 16:25 ft_strjoin.o
+-rw-r--r-- 1 root root  1247 Jul  9 16:44 ft_strjoin.c
+-rw-r--r-- 1 root root  1300 Jul  9 16:44 ft_strlcat.c
+-rw-r--r-- 1 root root  1472 Aug  5 16:25 ft_strlcat.o
+-rw-r--r-- 1 root root  1240 Aug  5 16:25 ft_strlcpy.o
+-rw-r--r-- 1 root root  1137 Jul  9 16:44 ft_strlcpy.c
+-rw-r--r-- 1 root root  1010 Jul  9 16:44 ft_strlen.c
+-rw-r--r-- 1 root root  1136 Aug  5 16:25 ft_strlen.o
+-rw-r--r-- 1 root root  1376 Aug  5 16:25 ft_strmapi.o
+-rw-r--r-- 1 root root  1168 Jul  9 16:44 ft_strmapi.c
+-rw-r--r-- 1 root root  1256 Aug  5 16:25 ft_strncmp.o
+-rw-r--r-- 1 root root  1155 Jul  9 16:44 ft_strncmp.c
+-rw-r--r-- 1 root root  1472 Aug  5 16:25 ft_strnstr.o
+-rw-r--r-- 1 root root  1342 Jul  9 16:44 ft_strnstr.c
+-rw-r--r-- 1 root root  1077 Jul  9 16:44 ft_strrchr.c
+-rw-r--r-- 1 root root  1312 Aug  5 16:25 ft_strrchr.o
+-rw-r--r-- 1 root root  1784 Aug  5 16:25 ft_strtrim.o
+-rw-r--r-- 1 root root  1559 Jul  9 16:44 ft_strtrim.c
+-rw-r--r-- 1 root root  1261 Jul  9 16:44 ft_substr.c
+-rw-r--r-- 1 root root  1744 Aug  5 16:25 ft_substr.o
+-rw-r--r-- 1 root root   997 Jul  9 16:44 ft_tolower.c
+-rw-r--r-- 1 root root  1128 Aug  5 16:25 ft_tolower.o
+-rw-r--r-- 1 root root  1128 Aug  5 16:25 ft_toupper.o
+-rw-r--r-- 1 root root   997 Jul  9 16:44 ft_toupper.c
+-rw-r--r-- 1 root root  3048 Aug  5 16:25 get_next_line.o
+-rw-r--r-- 1 root root  2447 Jul  9 16:44 get_next_line.c
+-rw-r--r-- 1 root root  2016 Aug  5 16:25 get_next_line_utils.o
+-rw-r--r-- 1 root root  1626 Jul  9 16:44 get_next_line_utils.c
+-rw-r--r-- 1 root root  3709 Aug  5 15:31 libft.h
+-rw-r--r-- 1 root root 76550 Aug  5 16:25 libft.a
+-rw-r--r-- 1 root root  2245 Aug  5 15:31 Makefile
+
+./Srcs:
+total 56
+-rw-r--r-- 1 root root  1549 Jul 30 23:31 acm.c
+-rw-r--r-- 1 root root  2524 Jul  9 19:39 getArgs.c
+-rw-r--r-- 1 root root 14857 Aug  5 16:34 ls.c
+-rw-r--r-- 1 root root  2177 Jul 23 14:18 main.c
+
+./test_dir:
+total 32
+-rw-r--r-- 2 root root   22 Jul 15 18:15 a
+prw-r--r-- 1 root root    0 Jul 15 18:05 fifo1
+-rw-r--r-- 2 root root   22 Jul 15 18:15 hard_link_of_a
+-rw-r--r-- 1 root root  588 Jul 15 18:23 notes.txt
+lrwxrwxrwx 1 root root    1 Jul 15 18:12 symbolic_link_of_a -> a
+drwxr-xr-x 12 root root 4096 Jul 15 19:36 Top
+
+./test_dir/Top:
+total 80
+drwxr-xr-x 5 root root 4096 Jul 15 19:36 A
+-rw-r--r-- 1 root root    0 Jul 15 19:36 Aas
+drwxr-xr-x 4 root root 4096 Jul 15 19:18 as
+drwxr-xr-x 4 root root 4096 Jul 15 19:18 asd
+drwxr-xr-x 4 root root 4096 Jul 15 19:18 ASD
+drwxr-xr-x 4 root root 4096 Jul 15 19:18 B
+drwxr-xr-x 4 root root 4096 Jul 15 19:18 C
+drwxr-xr-x 4 root root 4096 Jul 15 19:18 f
+drwxr-xr-x 4 root root 4096 Jul 15 19:18 FDs
+drwxr-xr-x 4 root root 4096 Jul 15 19:18 sdf
+drwxr-xr-x 4 root root 4096 Jul 15 19:18 Z
+
+./test_dir/Top/A:
+total 24
+drwxr-xr-x 2 root root 4096 Jul 15 19:18 az
+drwxr-xr-x 2 root root 4096 Jul 15 19:19 ba
+drwxr-xr-x 2 root root 4096 Jul 15 19:18 za
+
+./test_dir/Top/A/az:
+total 0
+
+./test_dir/Top/A/ba:
+total 0
+
+./test_dir/Top/A/za:
+total 0
+
+./test_dir/Top/as:
+total 16
+drwxr-xr-x 2 root root 4096 Jul 15 19:18 az
+drwxr-xr-x 2 root root 4096 Jul 15 19:18 za
+
+./test_dir/Top/as/az:
+total 0
+
+./test_dir/Top/as/za:
+total 0
+
+./test_dir/Top/ASD:
+total 16
+drwxr-xr-x 2 root root 4096 Jul 15 19:18 az
+drwxr-xr-x 2 root root 4096 Jul 15 19:18 za
+
+./test_dir/Top/ASD/az:
+total 0
+
+./test_dir/Top/ASD/za:
+total 0
+
+./test_dir/Top/asd:
+total 16
+drwxr-xr-x 2 root root 4096 Jul 15 19:18 az
+drwxr-xr-x 2 root root 4096 Jul 15 19:18 za
+
+./test_dir/Top/asd/az:
+total 0
+
+./test_dir/Top/asd/za:
+total 0
+
+./test_dir/Top/B:
+total 16
+drwxr-xr-x 2 root root 4096 Jul 15 19:18 az
+drwxr-xr-x 2 root root 4096 Jul 15 19:18 za
+
+./test_dir/Top/B/az:
+total 0
+
+./test_dir/Top/B/za:
+total 0
+
+./test_dir/Top/C:
+total 16
+drwxr-xr-x 2 root root 4096 Jul 15 19:18 az
+drwxr-xr-x 2 root root 4096 Jul 15 19:18 za
+
+./test_dir/Top/C/az:
+total 0
+
+./test_dir/Top/C/za:
+total 0
+
+./test_dir/Top/f:
+total 16
+drwxr-xr-x 2 root root 4096 Jul 15 19:18 az
+drwxr-xr-x 2 root root 4096 Jul 15 19:18 za
+
+./test_dir/Top/f/az:
+total 0
+
+./test_dir/Top/f/za:
+total 0
+
+./test_dir/Top/FDs:
+total 16
+drwxr-xr-x 2 root root 4096 Jul 15 19:18 az
+drwxr-xr-x 2 root root 4096 Jul 15 19:18 za
+
+./test_dir/Top/FDs/az:
+total 0
+
+./test_dir/Top/FDs/za:
+total 0
+
+./test_dir/Top/sdf:
+total 16
+drwxr-xr-x 2 root root 4096 Jul 15 19:18 az
+drwxr-xr-x 2 root root 4096 Jul 15 19:18 za
+
+./test_dir/Top/sdf/az:
+total 0
+
+./test_dir/Top/sdf/za:
+total 0
+
+./test_dir/Top/Z:
+total 16
+drwxr-xr-x 2 root root 4096 Jul 15 19:18 az
+drwxr-xr-x 2 root root 4096 Jul 15 19:18 za
+
+./test_dir/Top/Z/az:
+total 0
+
+./test_dir/Top/Z/za:
+total 0

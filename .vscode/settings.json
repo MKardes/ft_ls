@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "stdarg.h": "c",
+        "ft_strcmp": "c",
+        "libft.h": "c"
+    }
+}

@@ -359,6 +359,66 @@ t_dir* openDir(const char* dir_path, const char*  dir_name)
 	return (dir);
 }
 
+int fnamecmp(const char *s1, const char *s2) {
+	char *(toDown1) = NULL;
+	char *(toDown2) = NULL;
+	int (res) = 0;
+	toDown1 = malloc(ft_strlen(s1) * sizeof(char));
+	if (!toDown1)
+		return 0;
+	toDown2 = malloc(ft_strlen(s2) * sizeof(char));
+	if (!toDown2){
+		free(toDown1);
+		return 0;
+	}
+	ft_strcpy_func(toDown1, s1, ft_tolower);
+	ft_strcpy_func(toDown2, s2, ft_tolower);
+	if (ft_strcmp(toDown1, s2) == 0){
+		res = 1;
+	}
+	else if (ft_strcmp(toDown2, s1) == 0){
+		res = -1;
+	}
+	else {
+		res = ft_strcmp(toDown1, toDown2);
+	}
+	free(toDown1);
+	free(toDown2);
+	return (res);
+}
+
+/**
+ * @param list the list contains files
+ * @param flag variable to realise the type 
+ * of the list to get the string using as 
+ * the name of a the file 
+ * 0 - t_list is list of t_list*
+ * 1 - t_list is list of t_dir*
+ * 2 - t_list is list of char*
+ */
+void sortList(t_list *list, int flag){
+	t_list *(tmp) = NULL;
+	if (!list || ft_lstsize(list) == 1)
+		return;
+	while (list->next)
+	{
+		tmp = list->next;
+    	while (tmp)
+		{
+			void *first = (list->content);
+			char *second = (tmp->content);
+			if (((flag == 0) && fnamecmp(((t_listF*)first)->name, ((t_listF*)second)->name) > 0) ||
+				((flag == 1) && fnamecmp(((t_dir*)first)->path, ((t_dir*)second)->path) > 0) ||
+				((flag == 2) && fnamecmp((char *)first, (char *)second) > 0)){
+				list->content = second;
+				tmp->content = first;
+			}
+			tmp = tmp->next;
+		}
+		list = list->next;
+	}
+}
+
 int ls(const char *modes, t_dir *directory, bool flag)
 {
 	long    maxSize[3] = {0,0,0};
@@ -397,15 +457,18 @@ int ls(const char *modes, t_dir *directory, bool flag)
 	}
 	if (modes[1] == 'l')
 	{
+		sortList(list, 0);
 		printList(list, maxSize, total, path);
 		ft_lstclear(&list, &delLList);
 	}
 	else
 	{
+		sortList(list, 2);
 		printList(list, maxSize, -1, path);
 		ft_lstclear(&list, &delList);
 	}
 	t_list* recRoot = recDirs;
+	sortList(recDirs, 1);
 	while(recDirs){
 		ls(modes, recDirs->content, flag);
 		recDirs = recDirs->next;

@@ -1,3 +1,4 @@
 ./ft_ls . . .. . .. .
 ./ft_ls -Ral . . .
 ./ft_ls -Raa -a -R -a
+./ft_ls -l . (ft_printf.c ft_printf_1.c)
