@@ -244,6 +244,7 @@ static char    lListAddBack(t_list **list, const char *path, dirPoint dir, long 
 		free(tmp);
 		tmp = obj->name;
 		obj->name = ft_strjoin(tmp, link_path);
+		free(tmp);
 	}
 	free(tmp2);
 	*total += status.st_blocks;
@@ -363,10 +364,10 @@ int fnamecmp(const char *s1, const char *s2) {
 	char *(toDown1) = NULL;
 	char *(toDown2) = NULL;
 	int (res) = 0;
-	toDown1 = malloc(ft_strlen(s1) * sizeof(char));
+	toDown1 = malloc((ft_strlen(s1) + 1) * sizeof(char));
 	if (!toDown1)
 		return 0;
-	toDown2 = malloc(ft_strlen(s2) * sizeof(char));
+	toDown2 = malloc((ft_strlen(s2) + 1) * sizeof(char));
 	if (!toDown2){
 		free(toDown1);
 		return 0;
