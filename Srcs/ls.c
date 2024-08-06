@@ -396,8 +396,11 @@ int fnamecmp(const char *s1, const char *s2) {
  * 0 - t_list is list of t_list*
  * 1 - t_list is list of t_dir*
  * 2 - t_list is list of char*
+ * @param isReverse variable to realise if
+ * the r flag is given to make the ls command
+ * lists reverse 
  */
-void sortList(t_list *list, int flag){
+void sortList(t_list *list, int flag, int isReverse){
 	t_list *(tmp) = NULL;
 	if (!list || ft_lstsize(list) == 1)
 		return;
@@ -408,9 +411,20 @@ void sortList(t_list *list, int flag){
 		{
 			void *first = (list->content);
 			char *second = (tmp->content);
-			if (((flag == 0) && fnamecmp(((t_listF*)first)->name, ((t_listF*)second)->name) > 0) ||
-				((flag == 1) && fnamecmp(((t_dir*)first)->path, ((t_dir*)second)->path) > 0) ||
-				((flag == 2) && fnamecmp((char *)first, (char *)second) > 0)){
+			int	cmp_result = 0;
+			
+			if (flag == 0) {
+                cmp_result = fnamecmp(((t_listF*)first)->name, ((t_listF*)second)->name);
+            } else if (flag == 1) {
+                cmp_result = fnamecmp(((t_dir*)first)->path, ((t_dir*)second)->path);
+            } else if (flag == 2) {
+                cmp_result = fnamecmp((char *)first, (char *)second);
+            }
+
+            if (isReverse) {
+                cmp_result = -cmp_result;
+            }
+			if (cmp_result > 0){
 				list->content = second;
 				tmp->content = first;
 			}
@@ -458,18 +472,18 @@ int ls(const char *modes, t_dir *directory, bool flag)
 	}
 	if (modes[1] == 'l')
 	{
-		sortList(list, 0);
+		sortList(list, 0, modes[3] == 'r');
 		printList(list, maxSize, total, path);
 		ft_lstclear(&list, &delLList);
 	}
 	else
 	{
-		sortList(list, 2);
+		sortList(list, 2, modes[3] == 'r');
 		printList(list, maxSize, -1, path);
 		ft_lstclear(&list, &delList);
 	}
 	t_list* recRoot = recDirs;
-	sortList(recDirs, 1);
+	sortList(recDirs, 1, modes[3] == 'r');
 	while(recDirs){
 		ls(modes, recDirs->content, flag);
 		recDirs = recDirs->next;
