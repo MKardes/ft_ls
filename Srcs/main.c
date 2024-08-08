@@ -1,13 +1,5 @@
 #include "libft.h"
 #include "ft_ls.h"
-#include <stdio.h>
-#include <dirent.h>
-#include <sys/stat.h>
-#include <pwd.h>
-#include <errno.h>
-#include <grp.h>
-#include <time.h>
-#include <stdbool.h>
 
 //Hint: ls could be use with a file or folder
 
@@ -41,21 +33,6 @@
 //	You are not required to deal with ACL 
 //	and extended attributes. --> Access Control List
 
-void	del_dirs(void *e)
-{
-	if(!e)
-		return;
-	t_dir *(arg) = (t_dir *)e;
-	closedir(arg->dir);
-	free(arg->path);
-	free(arg);
-}
-
-void	del_list(void *e)
-{
-	return;
-}
-
 int	main(int ac, char *argv[])
 {
 	t_list	*directories;
@@ -69,6 +46,7 @@ int	main(int ac, char *argv[])
 	flag = 1;
 	f_cnt = get_flags(ac, argv, modes);
 	directories = get_directories(ac, argv, ac - f_cnt - 1);
+	sortList(&directories, modes, 1);
 	if (!directories)
 		return (-1);
 	root = directories;

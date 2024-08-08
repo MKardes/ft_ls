@@ -4,7 +4,7 @@ LIBFT = Libft/libft.a
 F_LIBFT = Libft
 
 FLAGS =  -ILibft -IHead
-SRCS = Srcs/main.c Srcs/getArgs.c Srcs/ls.c Srcs/acm.c Srcs/printList.c Srcs/utils.c 
+SRCS = Srcs/main.c Srcs/getArgs.c Srcs/ls.c Srcs/acm.c Srcs/printList.c Srcs/utils.c Srcs/del.c 
 
 all: $(NAME)
 

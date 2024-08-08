@@ -1,8 +1,9 @@
 #include "libft.h"
 #include "ft_ls.h"
 #include <stdio.h>
-#include <dirent.h>
 #include <errno.h>
+#include <sys/stat.h>
+#include <time.h>
 
 // t_list: 
 //  {
@@ -12,10 +13,11 @@
 static int	add_dir(t_list **list, DIR *dir, char *path)
 {
 	char	error[100];
+	struct stat (status) = {};
 
 	t_list *(tmp) = NULL;
 	t_dir *(new_dir) = NULL;
-	if (!dir)
+	if (!dir || lstat(path, &status) < 0)
 	{
 		if (errno == EACCES)
 			ft_strlcpy(error, "ft_ls: cannot open directory '", 28);
@@ -31,6 +33,10 @@ static int	add_dir(t_list **list, DIR *dir, char *path)
 		return (-1);
 	new_dir->dir = dir;
 	new_dir->path = ft_strdup(path);
+	new_dir->time = status.st_mtimespec.tv_sec;
+	new_dir->ntime = status.st_mtimespec.tv_nsec;
+	// new_dir->date = ft_substr(ctime(&status.st_mtime), 4, 13);
+	// new_dir->date[ft_strlen(new_dir->date) - 1] = '\0';
 	tmp = ft_lstnew(new_dir);
 	ft_lstadd_back(list, tmp);
 	return (1);

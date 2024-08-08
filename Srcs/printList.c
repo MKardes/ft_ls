@@ -1,5 +1,6 @@
 #include "ft_ls.h"
-#include <stdio.h>
+#include <time.h>
+
 static int	digit_count(long n)
 {
 	int	i;
@@ -59,7 +60,7 @@ static char	*addSpaces(char *str, long size)
 
 void	printList(t_list *list, long maxSize[4], long total, const char *path)
 {
-	t_listF	*(c) = NULL;
+	t_file	*(c) = NULL;
 	char *(fileNLink) = NULL;
 	char *(fileSize) = NULL;
 	int (maxDigitCountNLink) = digit_count(maxSize[0]);
@@ -85,7 +86,9 @@ void	printList(t_list *list, long maxSize[4], long total, const char *path)
 		fileSize = getSize(maxDigitCountSize, c->size);
 		c->pw_name = addSpaces(c->pw_name, maxSize[1]);
 		c->gr_name = addSpaces(c->gr_name, maxSize[2]);
-		ft_printf("%s %s %s %s %s %s %s\n", c->acm, fileNLink, c->pw_name, c->gr_name, fileSize, c->date, c->name);
+		char *timeStr = ft_substr(ctime(&(c->time)), 4, 12);
+		ft_printf("%s %s %s  %s  %s %s %s\n", c->acm, fileNLink, c->pw_name, c->gr_name, fileSize, timeStr/* c->date */, c->name);
+		free(timeStr);
 		free(fileNLink);
 		free(fileSize);
 		list = list->next;
