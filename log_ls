@@ -1,0 +1,142 @@
+total 2744
+drwxr-xr-x@   4 mkardes  2021_kocaeli      128 Aug  7 14:59 Head
+drwxr-xr-x@ 104 mkardes  2021_kocaeli     3328 Aug  8 12:03 Libft
+-rw-r--r--@   1 mkardes  2021_kocaeli      529 Aug  7 15:38 Makefile
+drwxr-xr-x@   8 mkardes  2021_kocaeli      256 Aug  7 15:37 Srcs
+-rw-r--r--@   1 mkardes  2021_kocaeli  1326015 Aug  6 15:52 en.subject.pdf
+-rwxr-xr-x    1 mkardes  2021_kocaeli    52464 Aug  8 12:03 ft_ls
+-rw-r--r--    1 mkardes  2021_kocaeli     8368 Aug  8 12:03 log
+-rw-r--r--    1 mkardes  2021_kocaeli        0 Aug  8 12:04 log_ls
+-rw-r--r--@   1 mkardes  2021_kocaeli      104 Aug  6 15:52 test
+-rw-r--r--@   1 mkardes  2021_kocaeli     1046 Aug  6 15:52 test.sh
+drwxr-xr-x@   9 mkardes  2021_kocaeli      288 Aug  6 15:52 test_dir
+
+./Head:
+total 24
+-rw-r--r--@ 1 mkardes  2021_kocaeli   969 Aug  7 16:00 ft_ls.h
+-rw-r--r--  1 mkardes  2021_kocaeli  6762 Aug  7 15:19 function_description.h
+
+./Libft:
+total 904
+-rw-r--r--@ 1 mkardes  2021_kocaeli   2245 Aug  6 15:52 Makefile
+-rw-r--r--@ 1 mkardes  2021_kocaeli   1253 Aug  6 15:52 ft_atoi.c
+-rw-r--r--  1 mkardes  2021_kocaeli    948 Aug  8 12:03 ft_atoi.o
+-rw-r--r--@ 1 mkardes  2021_kocaeli    973 Aug  6 15:52 ft_bzero.c
+-rw-r--r--  1 mkardes  2021_kocaeli    680 Aug  8 12:03 ft_bzero.o
+-rw-r--r--@ 1 mkardes  2021_kocaeli   1118 Aug  6 15:52 ft_calloc.c
+-rw-r--r--  1 mkardes  2021_kocaeli    940 Aug  8 12:03 ft_calloc.o
+-rw-r--r--@ 1 mkardes  2021_kocaeli    980 Aug  6 15:52 ft_isalnum.c
+-rw-r--r--  1 mkardes  2021_kocaeli    744 Aug  8 12:03 ft_isalnum.o
+-rw-r--r--@ 1 mkardes  2021_kocaeli    998 Aug  6 15:52 ft_isalpha.c
+-rw-r--r--  1 mkardes  2021_kocaeli    688 Aug  8 12:03 ft_isalpha.o
+-rw-r--r--@ 1 mkardes  2021_kocaeli    968 Aug  6 15:52 ft_isascii.c
+-rw-r--r--  1 mkardes  2021_kocaeli    656 Aug  8 12:03 ft_isascii.o
+-rw-r--r--@ 1 mkardes  2021_kocaeli    970 Aug  6 15:52 ft_isdigit.c
+-rw-r--r--  1 mkardes  2021_kocaeli    656 Aug  8 12:03 ft_isdigit.o
+-rw-r--r--@ 1 mkardes  2021_kocaeli    970 Aug  6 15:52 ft_isprint.c
+-rw-r--r--  1 mkardes  2021_kocaeli    656 Aug  8 12:03 ft_isprint.o
+-rw-r--r--@ 1 mkardes  2021_kocaeli   2131 Aug  6 15:52 ft_itoa.c
+-rw-r--r--  1 mkardes  2021_kocaeli   2072 Aug  8 12:03 ft_itoa.o
+-rw-r--r--@ 1 mkardes  2021_kocaeli   1082 Aug  6 15:52 ft_lstadd_back.c
+-rw-r--r--  1 mkardes  2021_kocaeli    744 Aug  8 12:03 ft_lstadd_back.o
+-rw-r--r--@ 1 mkardes  2021_kocaeli   1020 Aug  6 15:52 ft_lstadd_front.c
+-rw-r--r--  1 mkardes  2021_kocaeli    668 Aug  8 12:03 ft_lstadd_front.o
+-rw-r--r--@ 1 mkardes  2021_kocaeli   1113 Aug  6 15:52 ft_lstclear.c
+-rw-r--r--  1 mkardes  2021_kocaeli    812 Aug  8 12:03 ft_lstclear.o
+-rw-r--r--@ 1 mkardes  2021_kocaeli   1030 Aug  6 15:52 ft_lstdelone.c
+-rw-r--r--  1 mkardes  2021_kocaeli    720 Aug  8 12:03 ft_lstdelone.o
+-rw-r--r--@ 1 mkardes  2021_kocaeli   1061 Aug  6 15:52 ft_lstiter.c
+-rw-r--r--  1 mkardes  2021_kocaeli    704 Aug  8 12:03 ft_lstiter.o
+-rw-r--r--@ 1 mkardes  2021_kocaeli   1038 Aug  6 15:52 ft_lstlast.c
+-rw-r--r--  1 mkardes  2021_kocaeli    696 Aug  8 12:03 ft_lstlast.o
+-rw-r--r--@ 1 mkardes  2021_kocaeli   1208 Aug  6 15:52 ft_lstmap.c
+-rw-r--r--  1 mkardes  2021_kocaeli    868 Aug  8 12:03 ft_lstmap.o
+-rw-r--r--@ 1 mkardes  2021_kocaeli   1093 Aug  6 15:52 ft_lstnew.c
+-rw-r--r--  1 mkardes  2021_kocaeli    732 Aug  8 12:03 ft_lstnew.o
+-rw-r--r--@ 1 mkardes  2021_kocaeli   1021 Aug  6 15:52 ft_lstsize.c
+-rw-r--r--  1 mkardes  2021_kocaeli    672 Aug  8 12:03 ft_lstsize.o
+-rw-r--r--@ 1 mkardes  2021_kocaeli   1107 Aug  6 15:52 ft_memchr.c
+-rw-r--r--  1 mkardes  2021_kocaeli    724 Aug  8 12:03 ft_memchr.o
+-rw-r--r--@ 1 mkardes  2021_kocaeli   1166 Aug  6 15:52 ft_memcmp.c
+-rw-r--r--  1 mkardes  2021_kocaeli    740 Aug  8 12:03 ft_memcmp.o
+-rw-r--r--@ 1 mkardes  2021_kocaeli   1127 Aug  6 15:52 ft_memcpy.c
+-rw-r--r--  1 mkardes  2021_kocaeli    740 Aug  8 12:03 ft_memcpy.o
+-rw-r--r--@ 1 mkardes  2021_kocaeli   1296 Aug  6 15:52 ft_memmove.c
+-rw-r--r--  1 mkardes  2021_kocaeli    848 Aug  8 12:03 ft_memmove.o
+-rw-r--r--@ 1 mkardes  2021_kocaeli   1071 Aug  6 15:52 ft_memset.c
+-rw-r--r--  1 mkardes  2021_kocaeli    684 Aug  8 12:03 ft_memset.o
+-rw-r--r--@ 1 mkardes  2021_kocaeli   2439 Aug  6 15:52 ft_printf.c
+-rw-r--r--  1 mkardes  2021_kocaeli   3464 Aug  8 12:03 ft_printf.o
+-rw-r--r--@ 1 mkardes  2021_kocaeli   1754 Aug  6 15:52 ft_printf_1.c
+-rw-r--r--  1 mkardes  2021_kocaeli   1788 Aug  8 12:03 ft_printf_1.o
+-rw-r--r--@ 1 mkardes  2021_kocaeli    970 Aug  6 15:52 ft_putchar_fd.c
+-rw-r--r--  1 mkardes  2021_kocaeli    680 Aug  8 12:03 ft_putchar_fd.o
+-rw-r--r--@ 1 mkardes  2021_kocaeli   1022 Aug  6 15:52 ft_putendl_fd.c
+-rw-r--r--  1 mkardes  2021_kocaeli    876 Aug  8 12:03 ft_putendl_fd.o
+-rw-r--r--@ 1 mkardes  2021_kocaeli   1169 Aug  6 15:52 ft_putnbr_fd.c
+-rw-r--r--  1 mkardes  2021_kocaeli    984 Aug  8 12:03 ft_putnbr_fd.o
+-rw-r--r--@ 1 mkardes  2021_kocaeli   1000 Aug  6 15:52 ft_putstr_fd.c
+-rw-r--r--  1 mkardes  2021_kocaeli    756 Aug  8 12:03 ft_putstr_fd.o
+-rw-r--r--@ 1 mkardes  2021_kocaeli   2099 Aug  6 15:52 ft_split.c
+-rw-r--r--  1 mkardes  2021_kocaeli   1824 Aug  8 12:03 ft_split.o
+-rw-r--r--@ 1 mkardes  2021_kocaeli   1068 Aug  6 15:52 ft_strchr.c
+-rw-r--r--  1 mkardes  2021_kocaeli    716 Aug  8 12:03 ft_strchr.o
+-rw-r--r--@ 1 mkardes  2021_kocaeli   1167 Aug  6 15:52 ft_strcmp.c
+-rw-r--r--  1 mkardes  2021_kocaeli    812 Aug  8 12:03 ft_strcmp.o
+-rw-r--r--@ 1 mkardes  2021_kocaeli   1081 Aug  6 15:52 ft_strcpy_func.c
+-rw-r--r--  1 mkardes  2021_kocaeli    732 Aug  8 12:03 ft_strcpy_func.o
+-rw-r--r--@ 1 mkardes  2021_kocaeli   1164 Aug  6 15:52 ft_strdup.c
+-rw-r--r--  1 mkardes  2021_kocaeli    848 Aug  8 12:03 ft_strdup.o
+-rw-r--r--@ 1 mkardes  2021_kocaeli   1063 Aug  6 15:52 ft_striteri.c
+-rw-r--r--  1 mkardes  2021_kocaeli    712 Aug  8 12:03 ft_striteri.o
+-rw-r--r--@ 1 mkardes  2021_kocaeli   1247 Aug  6 15:52 ft_strjoin.c
+-rw-r--r--  1 mkardes  2021_kocaeli   1056 Aug  8 12:03 ft_strjoin.o
+-rw-r--r--@ 1 mkardes  2021_kocaeli   1300 Aug  6 15:52 ft_strlcat.c
+-rw-r--r--  1 mkardes  2021_kocaeli    912 Aug  8 12:03 ft_strlcat.o
+-rw-r--r--@ 1 mkardes  2021_kocaeli   1137 Aug  6 15:52 ft_strlcpy.c
+-rw-r--r--  1 mkardes  2021_kocaeli    816 Aug  8 12:03 ft_strlcpy.o
+-rw-r--r--@ 1 mkardes  2021_kocaeli   1010 Aug  6 15:52 ft_strlen.c
+-rw-r--r--  1 mkardes  2021_kocaeli    668 Aug  8 12:03 ft_strlen.o
+-rw-r--r--@ 1 mkardes  2021_kocaeli   1168 Aug  6 15:52 ft_strmapi.c
+-rw-r--r--  1 mkardes  2021_kocaeli    816 Aug  8 12:03 ft_strmapi.o
+-rw-r--r--@ 1 mkardes  2021_kocaeli   1155 Aug  6 15:52 ft_strncmp.c
+-rw-r--r--  1 mkardes  2021_kocaeli    824 Aug  8 12:03 ft_strncmp.o
+-rw-r--r--@ 1 mkardes  2021_kocaeli   1342 Aug  6 15:52 ft_strnstr.c
+-rw-r--r--  1 mkardes  2021_kocaeli   1000 Aug  8 12:03 ft_strnstr.o
+-rw-r--r--@ 1 mkardes  2021_kocaeli   1077 Aug  6 15:52 ft_strrchr.c
+-rw-r--r--  1 mkardes  2021_kocaeli    760 Aug  8 12:03 ft_strrchr.o
+-rw-r--r--@ 1 mkardes  2021_kocaeli   1559 Aug  6 15:52 ft_strtrim.c
+-rw-r--r--  1 mkardes  2021_kocaeli   1292 Aug  8 12:03 ft_strtrim.o
+-rw-r--r--@ 1 mkardes  2021_kocaeli   1261 Aug  6 15:52 ft_substr.c
+-rw-r--r--  1 mkardes  2021_kocaeli   1088 Aug  8 12:03 ft_substr.o
+-rw-r--r--@ 1 mkardes  2021_kocaeli    997 Aug  6 15:52 ft_tolower.c
+-rw-r--r--  1 mkardes  2021_kocaeli    664 Aug  8 12:03 ft_tolower.o
+-rw-r--r--@ 1 mkardes  2021_kocaeli    997 Aug  6 15:52 ft_toupper.c
+-rw-r--r--  1 mkardes  2021_kocaeli    664 Aug  8 12:03 ft_toupper.o
+-rw-r--r--@ 1 mkardes  2021_kocaeli   2447 Aug  6 15:52 get_next_line.c
+-rw-r--r--  1 mkardes  2021_kocaeli   2440 Aug  8 12:03 get_next_line.o
+-rw-r--r--@ 1 mkardes  2021_kocaeli   1626 Aug  6 15:52 get_next_line_utils.c
+-rw-r--r--  1 mkardes  2021_kocaeli   1484 Aug  8 12:03 get_next_line_utils.o
+-rw-r--r--  1 mkardes  2021_kocaeli  52448 Aug  8 12:03 libft.a
+-rw-r--r--@ 1 mkardes  2021_kocaeli   3709 Aug  6 15:52 libft.h
+
+./Srcs:
+total 56
+-rw-r--r--@ 1 mkardes  2021_kocaeli  1549 Aug  6 15:52 acm.c
+-rw-r--r--@ 1 mkardes  2021_kocaeli  2524 Aug  6 15:52 getArgs.c
+-rw-r--r--@ 1 mkardes  2021_kocaeli  6304 Aug  8 12:03 ls.c
+-rw-r--r--@ 1 mkardes  2021_kocaeli  2104 Aug  7 15:19 main.c
+-rw-r--r--  1 mkardes  2021_kocaeli  1886 Aug  8 12:01 printList.c
+-rw-r--r--  1 mkardes  2021_kocaeli   305 Aug  7 15:38 utils.c
+
+./test_dir:
+total 24
+drwxr-xr-x@ 3 mkardes  2021_kocaeli   96 Aug  6 15:52 Top
+-rw-r--r--@ 1 mkardes  2021_kocaeli   22 Aug  6 15:52 a
+-rw-r--r--@ 1 mkardes  2021_kocaeli   22 Aug  6 15:52 hard_link_of_a
+-rw-r--r--@ 1 mkardes  2021_kocaeli  588 Aug  6 15:52 notes.txt
+lrwxrwxrwx@ 1 mkardes  2021_kocaeli    1 Aug  6 15:52 symbolic_link_of_a -> a
+
+./test_dir/Top:
+total 0
+-rw-r--r--@ 1 mkardes  2021_kocaeli  0 Aug  6 15:52 Aas

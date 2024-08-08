@@ -10,12 +10,12 @@
 
 typedef struct s_listF {
     char*   name;
+    char*   date;
     char*   acm;
     long    nlink;
     char*   pw_name;
     char*   gr_name;
     long    size;
-    char*   date;
 } t_listF;
 
 typedef struct s_dir {
@@ -32,10 +32,17 @@ char* get_acm(int n);
 t_list  *get_directories(int ac, char *argv[], int dir_cnt);
 int     get_flags(int ac, char *argv[], char *modes);
 
+/* utils.c */
+char* getPath(const char* dir_path, const char*  dir_name);
+
+/* printList.c */
+void	printList(t_list *list, long maxSize[3], long total, const char *path);
+
 /* ls.c */
 int ls(const char *modes, t_dir *directory, bool flag);
 
 /* main.c */
 void    del_dirs(void *e);
+void	del_list(void *e);
 
 #endif

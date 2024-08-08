@@ -41,16 +41,6 @@
 //	You are not required to deal with ACL 
 //	and extended attributes. --> Access Control List
 
-//◦ getfattr -d -m - /path/to/your/file
-
-//◦ getxattr
-
-//◦ readlink
-
-//◦ perror
-
-//◦ strerror
-
 void	del_dirs(void *e)
 {
 	if(!e)
@@ -59,6 +49,11 @@ void	del_dirs(void *e)
 	closedir(arg->dir);
 	free(arg->path);
 	free(arg);
+}
+
+void	del_list(void *e)
+{
+	return;
 }
 
 int	main(int ac, char *argv[])
