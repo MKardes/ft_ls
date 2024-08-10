@@ -12,13 +12,13 @@
 
 #include "libft.h"
 
-int	ft_putchar_v2(char g)
+int	ft_putchar_v2(int fd, char g)
 {
-	write(1, &g, 1);
+	write(fd, &g, 1);
 	return (1);
 }
 
-int	hex_print(unsigned int n, char c)
+int	hex_print(int fd, unsigned int n, char c)
 {
 	int				i;
 	int				i1;
@@ -41,36 +41,36 @@ int	hex_print(unsigned int n, char c)
 		i1 = i;
 		while (--i1 >= 0)
 			n1 = n1 / 16;
-		ft_putchar_v2(a[n1 % 16]);
+		ft_putchar_v2(fd, a[n1 % 16]);
 	}
 	free(a);
 	return (len);
 }
 
-int	ptr_printer(unsigned long n)
+int	ptr_printer(int fd, unsigned long n)
 {
 	char	*a;
 
 	a = ft_strdup("0123456789abcdef");
 	if (n >= 16)
 	{
-		ptr_printer(n / 16);
-		ptr_printer(n % 16);
+		ptr_printer(fd, n / 16);
+		ptr_printer(fd, n % 16);
 	}
 	else
-		ft_putchar_v2(a[n]);
+		ft_putchar_v2(fd, a[n]);
 	free(a);
 	return (0);
 }
 
-int	ptr_print(unsigned long n)
+int	ptr_print(int fd, unsigned long n)
 {
 	int	i;
 
 	i = 1;
-	ft_putchar_v2('0');
-	ft_putchar_v2('x');
-	ptr_printer(n);
+	ft_putchar_v2(fd, '0');
+	ft_putchar_v2(fd, 'x');
+	ptr_printer(fd, n);
 	while (n >= 16)
 	{
 		n /= 16;

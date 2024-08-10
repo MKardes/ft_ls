@@ -6,6 +6,7 @@
 # include <stdbool.h>
 
 # define MAX_MODES 5
+# define MODES "alRrt"
 // [0] = -a, [1] = -l, [2] = -R, [3] = -r, [4] = -t
 
 typedef struct s_file {
@@ -32,7 +33,7 @@ typedef struct dirent* dirPoint;
 char* get_acm(int n);
 
 /* getArgs.c */
-t_list  *get_directories(int ac, char *argv[], int dir_cnt);
+t_list	*get_files(int ac, char *argv[], int file_cnt, int *dir_cnt);
 int     get_flags(int ac, char *argv[], char *modes);
 
 /* utils.c */
@@ -41,10 +42,11 @@ void sortList(t_list **list, const char *modes, char type);
 t_dir* openDir(char* dir_path);
 
 /* printList.c */
-void	printList(t_list *list, long maxSize[3], long total, const char *path);
+void	printList(t_list *list, long maxSize[3], long total, const char *path, int *nl_flag);
+void	printFile(const char *path, int isLFlag);
 
 /* ls.c */
-int ls(const char *modes, const t_dir *directory, int flag);
+int ls(const char *modes, const t_dir *directory, int flag, int *nl_flag);
 
 /* del.c */
 void	del_dirs(void *e);

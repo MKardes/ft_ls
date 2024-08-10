@@ -1,5 +1,7 @@
 #include "ft_ls.h"
 #include "libft.h"
+#include <errno.h>
+#include <string.h>
 #include <sys/stat.h>
 #include <time.h>
 #include <grp.h>
@@ -11,7 +13,7 @@ static char    listAddBack(t_list **list, const char *parentPath, const char *na
 	char		*filePath = getPath(parentPath, name);
 	if (lstat(filePath, &status) < 0)
 	{
-		ft_printf("Status info couldn't be taken!\n");
+		ft_printf_fd(2, "ft_ls: %s: %s\n", filePath, strerror(errno));
 		free(filePath);
 		return '\0';
 	}
@@ -62,7 +64,7 @@ static char    listAddBack(t_list **list, const char *parentPath, const char *na
  * @param flag 
  */
 
-int ls(const char *modes, const t_dir *directory, int flag)
+int ls(const char *modes, const t_dir *directory, int flag, int *nl_flag)
 {
 	long    maxSize[4] = {0,0,0,0};
 	long    total = (modes[1] == 'l') ? 0 : -1;
@@ -72,7 +74,11 @@ int ls(const char *modes, const t_dir *directory, int flag)
 	char    type;
 
 	if (!directory)
-		return(2);
+		return(-1);
+	if (!directory->dir){
+		printFile(directory->path, modes[1] == 'l');
+		return (0);
+	}
 	if (flag == 1)
 		path = directory->path;
 	dirPoint dir = readdir(directory->dir);
@@ -88,7 +94,7 @@ int ls(const char *modes, const t_dir *directory, int flag)
 		dir = readdir(directory->dir);
 	}
 	sortList(&list, modes, 0);
-	printList(list, maxSize, total, path);
+	printList(list, maxSize, total, path, nl_flag);
 	ft_lstclear(&list, &delLList);
 
 	sortList(&recDirs, modes, 0);
@@ -97,7 +103,7 @@ int ls(const char *modes, const t_dir *directory, int flag)
 		char		*filePath = getPath(directory->path, ((t_file *)(recDirs->content))->name);
 		t_dir* dir = openDir(filePath);
 		if (dir){
-			ls(modes, dir, ((flag == 2) ? 1 : flag));
+			ls(modes, dir, ((flag == 2) ? 1 : flag), nl_flag);
 			recDirs = recDirs->next;
 			del_dirs(dir);
 		}

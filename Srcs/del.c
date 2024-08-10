@@ -5,7 +5,8 @@ void	del_dirs(void *e)
 	if(!e)
 		return;
 	t_dir *(arg) = (t_dir *)e;
-	closedir(arg->dir);
+	if (arg->dir)
+		closedir(arg->dir);
 	free(arg->path);
 	free(arg);
 }

@@ -1,5 +1,10 @@
 #include "ft_ls.h"
 #include <time.h>
+#include <sys/stat.h>
+#include <grp.h>
+#include <pwd.h>
+#include <errno.h>
+#include <string.h>
 
 static int	digit_count(long n)
 {
@@ -58,15 +63,19 @@ static char	*addSpaces(char *str, long size)
 	return (res);
 }
 
-void	printList(t_list *list, long maxSize[4], long total, const char *path)
+void	printList(t_list *list, long *maxSize, long total, const char *path, int *nl_flag)
 {
 	t_file	*(c) = NULL;
 	char *(fileNLink) = NULL;
 	char *(fileSize) = NULL;
 	int (maxDigitCountNLink) = digit_count(maxSize[0]);
 	int (maxDigitCountSize) = digit_count(maxSize[3]);
+	if (*nl_flag != 0)
+		ft_printf("\n");
+	else
+		*nl_flag = 1;
 	if (path)
-		ft_printf("\n%s:\n", path);
+		ft_printf("%s:\n", path);
 	if (total == -1)
 	{
 		while (list)
@@ -87,10 +96,50 @@ void	printList(t_list *list, long maxSize[4], long total, const char *path)
 		c->pw_name = addSpaces(c->pw_name, maxSize[1]);
 		c->gr_name = addSpaces(c->gr_name, maxSize[2]);
 		char *timeStr = ft_substr(ctime(&(c->time)), 4, 12);
-		ft_printf("%s  %s %s  %s  %s %s %s\n", c->acm, fileNLink, c->pw_name, c->gr_name, fileSize, timeStr/* c->date */, c->name);
+		ft_printf("%s  %s %s  %s  %s %s %s\n", c->acm, fileNLink, c->pw_name, c->gr_name, fileSize, timeStr, c->name);
 		free(timeStr);
 		free(fileNLink);
 		free(fileSize);
 		list = list->next;
+	}
+}
+
+void	printFile(const char *path, int isLFlag) {
+	struct stat (status) = {};
+	if (lstat(path, &status) < 0)
+	{
+		ft_printf_fd(2, "ft_ls: %s: %s\n", path, strerror(errno));
+		return ;
+	}
+	if (isLFlag) {
+		char *name = ft_strdup(path);
+		char *acm = get_acm(status.st_mode);
+		if (acm[0] == 'l')
+		{
+			char link_path[1024];
+			int  byte = readlink(path, link_path, 1024);
+			link_path[byte] = '\0'; 
+			char *tmp = name;
+			name = ft_strjoin(tmp, " -> ");
+			free(tmp);
+			tmp = name;
+			name = ft_strjoin(tmp, link_path);
+			free(tmp);
+		}
+		char *timeStr = ft_substr(ctime(&(status.st_mtimespec.tv_sec)), 4, 12);
+		ft_printf("%s  %d %s  %s  %d %s %s\n",
+			acm,
+			status.st_nlink,
+			getpwuid(status.st_uid)->pw_name,
+			getgrgid(status.st_gid)->gr_name,
+			status.st_size,
+			timeStr,
+			name);
+		free(timeStr);
+		free(name);
+		free(acm);
+	}
+	else {
+		ft_printf("%s\n", path);
 	}
 }

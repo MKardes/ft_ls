@@ -35,29 +35,46 @@
 
 int	main(int ac, char *argv[])
 {
-	t_list	*directories;
+	t_list	*files;
 	t_list	*root;
 	char	modes[MAX_MODES];
-	int		f_cnt;
+	int		flag_cnt;
+	int		dir_cnt;
+	int		regFile_cnt;
 	int		res;
 	int		flag;
+	int		nl_flag;
 
 	res = 0;
 	flag = 0;
-	f_cnt = get_flags(ac, argv, modes);
-	directories = get_directories(ac, argv, ac - f_cnt - 1);
-	sortList(&directories, modes, 1);
-	if (!directories)
+	nl_flag = 0;
+	dir_cnt = 0;
+	regFile_cnt = 0;
+	flag_cnt = get_flags(ac, argv, modes);
+	files = get_files(ac, argv, ac - flag_cnt - 1, &dir_cnt);
+	regFile_cnt = ac - flag_cnt - 1 - dir_cnt;
+	sortList(&files, modes, 1);
+	if (!files)
 		return (-1);
-	root = directories;
-	if (!(ac - f_cnt - 1 == 0 || ac - f_cnt - 1 == 1))
+	root = files;
+	if (!(dir_cnt + regFile_cnt == 0 || dir_cnt + regFile_cnt == 1))
 		flag = 1;
 	else if (modes[2] == 'R')
 		flag = 2;
-	while (directories)
+	while (files)
 	{
-		res = ls(modes, (t_dir *)directories->content, flag);
-		directories = directories->next;
+		if (!((t_dir *)(files->content))->dir) 
+			res = ls(modes, (t_dir *)files->content, flag, &nl_flag);
+		files = files->next;
+	}
+	if (regFile_cnt > 0 && dir_cnt > 0)
+		ft_printf("\n");
+	files = root;
+	while (files)
+	{
+		if (((t_dir *)(files->content))->dir)
+			res = ls(modes, (t_dir *)files->content, flag, &nl_flag);
+		files = files->next;
 	}
 	ft_lstclear(&root, &del_dirs);
 	return (res);

@@ -12,7 +12,7 @@ args_array=(
     '-rtlRa' 
     '-lR ./'
     '-lRa -a -a -a .'
-    '-lRa . -t'
+    '-lRa . Makefile -t'
     '-lR'
     '-lR .'
     '-l  . .'
@@ -20,7 +20,8 @@ args_array=(
     '-l'
     '- l'
     '-l main.c'
-    '-asd'
+    '-l Makefile Makefile Makefile'
+    '-jsd'
 )
 
 mkdir -p /goinfre/mkardes/log/diff

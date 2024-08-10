@@ -73,14 +73,15 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 
 /* printf */
 int	ft_bas_say(unsigned int c);
-int	array_print(char *str);
-int	ft_putchar_v2(char g);
-int	hex_print(unsigned int n, char c);
-int	ptr_printer(unsigned long n);
-int	ptr_print(unsigned long n);
-int	ft_uitoa(unsigned int a);
-int	ft_strchecker(va_list arg, int g);
+int	array_print(int fd, char *str);
+int	ft_putchar_v2(int fd, char g);
+int	hex_print(int fd, unsigned int n, char c);
+int	ptr_printer(int fd, unsigned long n);
+int	ptr_print(int fd, unsigned long n);
+int	ft_uitoa(int fd, unsigned int a);
+int	ft_strchecker(va_list arg, int g, int fd);
 int	ft_printf(const char *str, ...);
+int	ft_printf_fd(int fd, const char *str, ...);
 
 /* Get Next Line */
 # ifndef BUFFER_SIZE

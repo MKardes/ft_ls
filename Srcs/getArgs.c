@@ -1,56 +1,54 @@
 #include "libft.h"
 #include "ft_ls.h"
-#include <stdio.h>
 #include <errno.h>
 #include <sys/stat.h>
 #include <time.h>
+#include <string.h>
 
 // t_list: 
 //  {
 //      t_dir *content
 //      void *next
 //  }
-static int	add_dir(t_list **list, DIR *dir, char *path)
+static int	add_dir(t_list **list, char *path, int *dir_cnt)
 {
-	char	error[100];
 	struct stat (status) = {};
-
 	t_list *(tmp) = NULL;
 	t_dir *(new_dir) = NULL;
-	if (!dir || lstat(path, &status) < 0)
+	if (lstat(path, &status) < 0)
 	{
-		if (errno == EACCES)
-			ft_strlcpy(error, "ft_ls: cannot open directory '", 28);
-		else
-			ft_strlcpy(error, "ft_ls: cannot access '", 23);
-		ft_strlcat(error, path, ft_strlen(path) + ft_strlen(error) + 1);
-		ft_strlcat(error, "'", ft_strlen(error) + 2);
-		perror(error);
+		ft_printf_fd(2, "ft_ls: %s: %s\n", path, strerror(errno));
 		return (0);
 	}
 	new_dir = (t_dir *)malloc(sizeof(t_dir));
 	if (!new_dir)
 		return (-1);
-	new_dir->dir = dir;
+	if (S_ISDIR(status.st_mode)){
+		DIR *(dir) = opendir(path);
+		if (!dir) {
+			ft_printf_fd(2, "ft_ls: %s: %s\n", path, strerror(errno));
+			return(-1);
+		}
+		new_dir->dir = dir;
+		(*dir_cnt)++;
+	}
+	else
+		new_dir->dir = NULL;
 	new_dir->path = ft_strdup(path);
 	new_dir->time = status.st_mtimespec.tv_sec;
 	new_dir->ntime = status.st_mtimespec.tv_nsec;
-	// new_dir->date = ft_substr(ctime(&status.st_mtime), 4, 13);
-	// new_dir->date[ft_strlen(new_dir->date) - 1] = '\0';
 	tmp = ft_lstnew(new_dir);
 	ft_lstadd_back(list, tmp);
 	return (1);
 }
 
-static t_list	*dirs(char **dirs)
+static t_list	*dirs(char **dirs, int *dir_cnt)
 {
 	t_list *(res) = NULL;
-	DIR *(dir1) = NULL;
 	int (i) = 0;
 	while (dirs[i])
 	{
-		dir1 = opendir(dirs[i]);
-		if (add_dir(&res, dir1, dirs[i]) < 0)
+		if (add_dir(&res, dirs[i], dir_cnt) < 0)
 			return (NULL);
 		i++;
 	}
@@ -62,13 +60,13 @@ static t_list	*dirs(char **dirs)
 }
 
 // checks if a directory or file present in arguments
-t_list	*get_directories(int ac, char *argv[], int dir_cnt)
+t_list	*get_files(int ac, char *argv[], int file_cnt, int *dir_cnt)
 {
 	int (i) = 0;
 	int (dirI) = 0;
 	int	(flag) = 0;
 	char **(dir_strs) = NULL;
-	if (dir_cnt == 0)
+	if (file_cnt == 0)
 	{
 		dir_strs = (char **)malloc(sizeof(char *) * 2);
 		if (!dir_strs)
@@ -77,18 +75,18 @@ t_list	*get_directories(int ac, char *argv[], int dir_cnt)
 		dir_strs[1] = NULL;
 	}
 	else {
-		dir_strs = (char **)malloc(sizeof(char *) * (dir_cnt + 1));
+		dir_strs = (char **)malloc(sizeof(char *) * (file_cnt + 1));
 		if (!dir_strs)
 			return (NULL);
-		dir_strs[dir_cnt] = NULL;
+		dir_strs[file_cnt] = NULL;
 		while (++i < ac) {
-			if (flag || argv[i][0] != '-'){
+			if (flag || argv[i][0] != '-' || (argv[i][0] == '-' && ft_strlen(argv[i]) == 0)){
 				flag = 1;
 				dir_strs[dirI++] = ft_strdup(argv[i]);
 			}
 		}
 	}
-	return (dirs(dir_strs));
+	return (dirs(dir_strs, dir_cnt));
 }
 
 static void	fill_modes(char *opt, char *modes)
@@ -110,9 +108,8 @@ static void	fill_modes(char *opt, char *modes)
 			modes[4] = 't';
 		else
 		{
-			write(1, "ls: undefined option -- '", 25);
-			ft_printf("%c", opt[j]);
-			write(1, "'\n", 3);
+			ft_printf_fd(2, "ls: illegal option -- '%c'\n", opt[j]);
+			ft_printf_fd(2, "usage: ls [-%s] [file ...]\n", MODES);
 			exit(2);
 		}
 	}
@@ -126,7 +123,7 @@ int	get_flags(int ac, char *argv[], char *modes)
 	ft_memset(modes, '-', MAX_MODES);
 	while (++i < ac)
 	{
-		if (argv[i][0] == '-')
+		if (argv[i][0] == '-' && ft_strlen(argv[i]) > 1)
 		{
 			cnt++;
 			fill_modes(argv[i], modes);

@@ -1,18 +1,20 @@
 #include "ft_ls.h"
 #include <sys/stat.h>
+#include <string.h>
 #include <errno.h>
 #include <stdio.h>
 
 char* getPath(const char* dir_path, const char*  dir_name)
 {
 	char*		path = NULL;
-	if(dir_path[ft_strlen(dir_path) - 1] != '/'){
-		char* tmp = ft_strjoin(dir_path, "/");
-		path = ft_strjoin(tmp, dir_name);
-		free(tmp);
+	if (!dir_path || !dir_name)
+		return NULL;
+	if (ft_strcmp(dir_path, "") == 0){
+		return ft_strdup(dir_name);
 	}
-	else
-		path = ft_strjoin(dir_path, dir_name);
+	char* tmp = ft_strjoin(dir_path, "/");
+	path = ft_strjoin(tmp, dir_name);
+	free(tmp);
 	return path;
 }
 
@@ -96,14 +98,7 @@ t_dir* openDir(char* dir_path)
 		open = opendir(dir_path);
 	if (!open)
 	{
-		char error[100];
-		if (errno == EACCES)
-			ft_strlcpy(error, "ft_ls: cannot open directory '", 28);
-		else
-			ft_strlcpy(error, "ft_ls: cannot access '", 23);
-		ft_strlcat(error, dir_path, ft_strlen(dir_path) + ft_strlen(error) + 1);
-		ft_strlcat(error, "'", ft_strlen(error) + 2);
-		perror(error);
+		ft_printf_fd(2, "ft_ls: %s: %s\n", dir_path, strerror(errno));
 		return (NULL);
 	}
 	else
