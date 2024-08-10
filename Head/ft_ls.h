@@ -12,7 +12,6 @@ typedef struct s_file {
     char*   name;
     time_t	time;
 	long	ntime;
-    // char*   date;
     char*   acm;
     long    nlink;
     char*   pw_name;
@@ -24,7 +23,6 @@ typedef struct s_dir {
     char*   path;
     time_t	time;
 	long	ntime;
-    // char*   date;
     DIR*    dir;
 } t_dir;
 
@@ -46,7 +44,7 @@ t_dir* openDir(char* dir_path);
 void	printList(t_list *list, long maxSize[3], long total, const char *path);
 
 /* ls.c */
-int ls(const char *modes, const t_dir *directory, bool flag);
+int ls(const char *modes, const t_dir *directory, int flag);
 
 /* del.c */
 void	del_dirs(void *e);

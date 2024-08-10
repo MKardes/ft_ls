@@ -22,10 +22,7 @@ static char    listAddBack(t_list **list, const char *parentPath, const char *na
 	obj->name = ft_strdup(name);
 	obj->time = status.st_mtimespec.tv_sec;
 	obj->ntime = status.st_mtimespec.tv_nsec;
-	// obj->date = ft_substr(ctime(&status.st_mtime), 4, 13);
-	// obj->date[ft_strlen(obj->date) - 1] = '\0';
 	obj->acm = get_acm(status.st_mode);
-	// obj->date = ft_substr(ctime(&status.st_mtim.tv_sec), 4, 13);
 	if (total && *total != -1){
 		if (obj->acm[0] == 'l')
 		{
@@ -52,7 +49,6 @@ static char    listAddBack(t_list **list, const char *parentPath, const char *na
 		if (maxSize[3] < obj->size)
 			maxSize[3] = obj->size;
 		*total += status.st_blocks;
-		// *total += status.st_blocks / 2;
 	}
 	tmp = ft_lstnew(obj);
 	ft_lstadd_back(list, tmp);
@@ -60,7 +56,13 @@ static char    listAddBack(t_list **list, const char *parentPath, const char *na
 	return (obj->acm[0]);
 }
 
-int ls(const char *modes, const t_dir *directory, bool flag)
+/** 
+ * @param modes
+ * @param directory
+ * @param flag 
+ */
+
+int ls(const char *modes, const t_dir *directory, int flag)
 {
 	long    maxSize[4] = {0,0,0,0};
 	long    total = (modes[1] == 'l') ? 0 : -1;
@@ -71,7 +73,7 @@ int ls(const char *modes, const t_dir *directory, bool flag)
 
 	if (!directory)
 		return(2);
-	if (flag)
+	if (flag == 1)
 		path = directory->path;
 	dirPoint dir = readdir(directory->dir);
 	while(dir)
@@ -89,13 +91,13 @@ int ls(const char *modes, const t_dir *directory, bool flag)
 	printList(list, maxSize, total, path);
 	ft_lstclear(&list, &delLList);
 
-	t_list* recRoot = recDirs;
 	sortList(&recDirs, modes, 0);
+	t_list* recRoot = recDirs;
 	while(recDirs){
 		char		*filePath = getPath(directory->path, ((t_file *)(recDirs->content))->name);
 		t_dir* dir = openDir(filePath);
 		if (dir){
-			ls(modes, dir, flag);
+			ls(modes, dir, ((flag == 2) ? 1 : flag));
 			recDirs = recDirs->next;
 			del_dirs(dir);
 		}

@@ -1,18 +1,39 @@
 TEST_DIR="/goinfre/mkardes"
 counter=1
-args="-a"
+args_array=(
+    '' 
+    '-la' 
+    '-lR' 
+    '-l . .. . ../.' 
+    '-tl' 
+    '-rl' 
+    '-rtl' 
+    '-rtlR' 
+    '-rtlRa' 
+    '-lR ./'
+    '-lRa -a -a -a .'
+    '-lRa . -t'
+    '-lR'
+    '-lR .'
+    '-l  . .'
+    '-lR  . .'
+    '-l'
+    '- l'
+    '-l main.c'
+    '-asd'
+)
 
-valgrind --leak-check=full ./ft_ls ${args} 1> ${TEST_DIR}/log/log${counter} 2> ${TEST_DIR}/log/log_val${counter}; ls ${args} > ${TEST_DIR}/log/ls_log${counter}; counter=$((counter + 1)) args="-la";
-valgrind --leak-check=full ./ft_ls ${args} 1> ${TEST_DIR}/log/log${counter} 2> ${TEST_DIR}/log/log_val${counter}; ls ${args} > ${TEST_DIR}/log/ls_log${counter}; counter=$((counter + 1)) args="-l";
-valgrind --leak-check=full ./ft_ls ${args} 1> ${TEST_DIR}/log/log${counter} 2> ${TEST_DIR}/log/log_val${counter}; ls ${args} > ${TEST_DIR}/log/ls_log${counter}; counter=$((counter + 1)) args="-lR";
-valgrind --leak-check=full ./ft_ls ${args} 1> ${TEST_DIR}/log/log${counter} 2> ${TEST_DIR}/log/log_val${counter}; ls ${args} > ${TEST_DIR}/log/ls_log${counter}; counter=$((counter + 1)) args="-R";
-valgrind --leak-check=full ./ft_ls ${args} 1> ${TEST_DIR}/log/log${counter} 2> ${TEST_DIR}/log/log_val${counter}; ls ${args} > ${TEST_DIR}/log/ls_log${counter}; counter=$((counter + 1)) args=". .. . ../..";
-valgrind --leak-check=full ./ft_ls ${args} 1> ${TEST_DIR}/log/log${counter} 2> ${TEST_DIR}/log/log_val${counter}; ls ${args} > ${TEST_DIR}/log/ls_log${counter}; counter=$((counter + 1)) args="-l . .. . ../.";
-valgrind --leak-check=full ./ft_ls ${args} 1> ${TEST_DIR}/log/log${counter} 2> ${TEST_DIR}/log/log_val${counter}; ls ${args} > ${TEST_DIR}/log/ls_log${counter}; counter=$((counter + 1)) args="";
-valgrind --leak-check=full ./ft_ls ${args} 1> ${TEST_DIR}/log/log${counter} 2> ${TEST_DIR}/log/log_val${counter}; ls ${args} > ${TEST_DIR}/log/ls_log${counter}; counter=$((counter + 1)) args="-t";
-valgrind --leak-check=full ./ft_ls ${args} 1> ${TEST_DIR}/log/log${counter} 2> ${TEST_DIR}/log/log_val${counter}; ls ${args} > ${TEST_DIR}/log/ls_log${counter}; counter=$((counter + 1)) args="-r";
-valgrind --leak-check=full ./ft_ls ${args} 1> ${TEST_DIR}/log/log${counter} 2> ${TEST_DIR}/log/log_val${counter}; ls ${args} > ${TEST_DIR}/log/ls_log${counter}; counter=$((counter + 1)) args="-rt";
-valgrind --leak-check=full ./ft_ls ${args} 1> ${TEST_DIR}/log/log${counter} 2> ${TEST_DIR}/log/log_val${counter}; ls ${args} > ${TEST_DIR}/log/ls_log${counter}; counter=$((counter + 1)) args="-rtl";
-valgrind --leak-check=full ./ft_ls ${args} 1> ${TEST_DIR}/log/log${counter} 2> ${TEST_DIR}/log/log_val${counter}; ls ${args} > ${TEST_DIR}/log/ls_log${counter}; counter=$((counter + 1)) args="-rtlR";
-valgrind --leak-check=full ./ft_ls ${args} 1> ${TEST_DIR}/log/log${counter} 2> ${TEST_DIR}/log/log_val${counter}; ls ${args} > ${TEST_DIR}/log/ls_log${counter}; counter=$((counter + 1)) args="-rtlRa";
-valgrind --leak-check=full ./ft_ls ${args} 1> ${TEST_DIR}/log/log${counter} 2> ${TEST_DIR}/log/log_val${counter}; ls ${args} > ${TEST_DIR}/log/ls_log${counter};
+mkdir -p /goinfre/mkardes/log/diff
+print_arguments() {
+    local args=("$@")
+    for arg in "${args[@]}"; do
+        echo "./ft_ls \"${arg}\" testing..."
+        valgrind --leak-check=full ./ft_ls ${arg} 1> ${TEST_DIR}/log/log${counter} 2> ${TEST_DIR}/log/log_val${counter};
+        ls ${arg} > ${TEST_DIR}/log/ls_log${counter};
+        diff ${TEST_DIR}/log/log${counter} ${TEST_DIR}/log/ls_log${counter} > ${TEST_DIR}/log/diff/diff_${counter};
+        counter=$((counter + 1));
+    done
+}
+
+# Call the function with the array
+print_arguments "${args_array[@]}"

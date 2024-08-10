@@ -66,6 +66,7 @@ t_list	*get_directories(int ac, char *argv[], int dir_cnt)
 {
 	int (i) = 0;
 	int (dirI) = 0;
+	int	(flag) = 0;
 	char **(dir_strs) = NULL;
 	if (dir_cnt == 0)
 	{
@@ -81,8 +82,10 @@ t_list	*get_directories(int ac, char *argv[], int dir_cnt)
 			return (NULL);
 		dir_strs[dir_cnt] = NULL;
 		while (++i < ac) {
-			if (argv[i][0] != '-')
+			if (flag || argv[i][0] != '-'){
+				flag = 1;
 				dir_strs[dirI++] = ft_strdup(argv[i]);
+			}
 		}
 	}
 	return (dirs(dir_strs));
@@ -128,6 +131,8 @@ int	get_flags(int ac, char *argv[], char *modes)
 			cnt++;
 			fill_modes(argv[i], modes);
 		}
+		else
+			break;
 	}
 	return (cnt);
 }

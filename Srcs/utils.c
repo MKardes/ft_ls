@@ -44,12 +44,10 @@ static void sort(t_list *list, char sortType, char type) {
 			void *first = (list->content);
 			void *second = (tmp->content);
 			int	cmp_result = 0;
-			
 			if (sortType == 't')
 				cmp_result = cmp_by_time(first, second, type);
 			else if (sortType == 'n')
 				cmp_result = ft_strcmp(((char **)(first))[0], ((char **)(second))[0]); // compares names
-			
 			if (cmp_result > 0){
 				list->content = second;
 				tmp->content = first;
@@ -76,7 +74,7 @@ static t_list *reverse(t_list *list){
 void sortList(t_list **list, const char *modes, char type)
 {
 	t_list *(tmp) = NULL;
-	if (!list || ft_lstsize(*list) == 1)
+	if (!list || !(*list) || ft_lstsize(*list) == 1)
 		return;
 	sort(*list, 'n', type);
 	if (modes[4] == 't')

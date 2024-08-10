@@ -87,7 +87,7 @@ void	printList(t_list *list, long maxSize[4], long total, const char *path)
 		c->pw_name = addSpaces(c->pw_name, maxSize[1]);
 		c->gr_name = addSpaces(c->gr_name, maxSize[2]);
 		char *timeStr = ft_substr(ctime(&(c->time)), 4, 12);
-		ft_printf("%s %s %s  %s  %s %s %s\n", c->acm, fileNLink, c->pw_name, c->gr_name, fileSize, timeStr/* c->date */, c->name);
+		ft_printf("%s  %s %s  %s  %s %s %s\n", c->acm, fileNLink, c->pw_name, c->gr_name, fileSize, timeStr/* c->date */, c->name);
 		free(timeStr);
 		free(fileNLink);
 		free(fileSize);

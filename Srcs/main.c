@@ -40,18 +40,20 @@ int	main(int ac, char *argv[])
 	char	modes[MAX_MODES];
 	int		f_cnt;
 	int		res;
-	bool	flag;
+	int		flag;
 
 	res = 0;
-	flag = 1;
+	flag = 0;
 	f_cnt = get_flags(ac, argv, modes);
 	directories = get_directories(ac, argv, ac - f_cnt - 1);
 	sortList(&directories, modes, 1);
 	if (!directories)
 		return (-1);
 	root = directories;
-	if ((ac - f_cnt - 1 == 0 || ac - f_cnt - 1 == 1) && modes[2] != 'R')
-		flag = 0;
+	if (!(ac - f_cnt - 1 == 0 || ac - f_cnt - 1 == 1))
+		flag = 1;
+	else if (modes[2] == 'R')
+		flag = 2;
 	while (directories)
 	{
 		res = ls(modes, (t_dir *)directories->content, flag);
@@ -60,3 +62,9 @@ int	main(int ac, char *argv[])
 	ft_lstclear(&root, &del_dirs);
 	return (res);
 }
+
+// -R  			      tot      a: tot     b: tot    (f_cnt = 1 && -R present)   flag = 2
+// -R arg             tot 	   a: tot     b: tot    (f_cnt = 1 && -R present)   flag = 2
+// arg arg arg        a: tot   b: tot     c: tot    (f_cnt != 1 && -R !present) flag = 1
+// -R arg arg arg     a: tot   b: tot     c: tot    (f_cnt != 1 && -R present)  flag = 1
+// ...												(f_cnt = 1 && -R !present)	flag = 0
