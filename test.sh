@@ -37,5 +37,4 @@ print_arguments() {
     done
 }
 
-# Call the function with the array
 print_arguments "${args_array[@]}"
