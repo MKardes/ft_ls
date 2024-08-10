@@ -22,6 +22,7 @@ args_array=(
     '-l main.c'
     '-l Makefile Makefile Makefile'
     '-jsd'
+    '-lR .///'
 )
 
 mkdir -p /goinfre/mkardes/log/diff

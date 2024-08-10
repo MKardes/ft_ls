@@ -58,12 +58,6 @@ static char    listAddBack(t_list **list, const char *parentPath, const char *na
 	return (obj->acm[0]);
 }
 
-/** 
- * @param modes
- * @param directory
- * @param flag 
- */
-
 int ls(const char *modes, const t_dir *directory, int flag, int *nl_flag)
 {
 	long    maxSize[4] = {0,0,0,0};

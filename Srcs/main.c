@@ -1,9 +1,6 @@
 #include "libft.h"
 #include "ft_ls.h"
 
-//Hint: ls could be use with a file or folder
-
-/* First */
 //-R, --recursive /* First */
 //    qqlist subdirectories recursively
 

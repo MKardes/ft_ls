@@ -108,7 +108,6 @@ t_dir* openDir(char* dir_path)
 			return (NULL);
 		dir->dir = open;
 		dir->path = dir_path;
-		// dir->date = NULL;
 	}
 	return (dir);
 }
