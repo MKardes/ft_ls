@@ -22,8 +22,8 @@ static char    listAddBack(t_list **list, const char *parentPath, const char *na
 	obj = (t_file *)malloc(sizeof(t_file));
 	ft_bzero(obj, sizeof(t_file));
 	obj->name = ft_strdup(name);
-	obj->time = status.st_mtimespec.tv_sec;
-	obj->ntime = status.st_mtimespec.tv_nsec;
+	obj->time = status.st_mtim.tv_sec;
+	obj->ntime = status.st_mtim.tv_nsec;
 	obj->acm = get_acm(status.st_mode);
 	if (total && *total != -1){
 		if (obj->acm[0] == 'l')
@@ -98,9 +98,9 @@ int ls(const char *modes, const t_dir *directory, int flag, int *nl_flag)
 		t_dir* dir = openDir(filePath);
 		if (dir){
 			ls(modes, dir, ((flag == 2) ? 1 : flag), nl_flag);
-			recDirs = recDirs->next;
 			del_dirs(dir);
 		}
+		recDirs = recDirs->next;
 	}
 	ft_lstclear(&recRoot, &delLList);
 	return(0);
