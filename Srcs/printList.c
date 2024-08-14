@@ -126,7 +126,7 @@ void	printFile(const char *path, int isLFlag) {
 			name = ft_strjoin(tmp, link_path);
 			free(tmp);
 		}
-		char *timeStr = ft_substr(ctime(&(status.st_mtim.tv_sec)), 4, 12);
+		char *timeStr = ft_substr(ctime(&(status.STAT_TIME.tv_sec)), 4, 12);
 		ft_printf("%s  %d %s  %s  %d %s %s\n",
 			acm,
 			status.st_nlink,

@@ -35,8 +35,8 @@ static int	add_dir(t_list **list, char *path, int *dir_cnt)
 	else
 		new_dir->dir = NULL;
 	new_dir->path = ft_strdup(path);
-	new_dir->time = status.st_mtim.tv_sec;
-	new_dir->ntime = status.st_mtim.tv_nsec;
+	new_dir->time = status.STAT_TIME.tv_sec;
+	new_dir->ntime = status.STAT_TIME.tv_nsec;
 	tmp = ft_lstnew(new_dir);
 	ft_lstadd_back(list, tmp);
 	return (1);

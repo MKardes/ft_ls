@@ -6,6 +6,14 @@
 # include <stdbool.h>
 
 # define MAX_MODES 5
+
+# ifdef __linux__
+#  define STAT_TIME st_mtim
+# else
+#  define STAT_TIME st_mtimespec
+# endif
+
+# define MAX_MODES 5
 # define MODES "alRrt"
 // [0] = -a, [1] = -l, [2] = -R, [3] = -r, [4] = -t
 

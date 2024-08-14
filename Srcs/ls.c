@@ -22,8 +22,8 @@ static char    listAddBack(t_list **list, const char *parentPath, const char *na
 	obj = (t_file *)malloc(sizeof(t_file));
 	ft_bzero(obj, sizeof(t_file));
 	obj->name = ft_strdup(name);
-	obj->time = status.st_mtim.tv_sec;
-	obj->ntime = status.st_mtim.tv_nsec;
+	obj->time = status.STAT_TIME.tv_sec;
+	obj->ntime = status.STAT_TIME.tv_nsec;
 	obj->acm = get_acm(status.st_mode);
 	if (total && *total != -1){
 		if (obj->acm[0] == 'l')
